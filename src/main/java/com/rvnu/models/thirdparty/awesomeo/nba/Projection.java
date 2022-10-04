@@ -1,6 +1,7 @@
 package com.rvnu.models.thirdparty.awesomeo.nba;
 
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
+import com.rvnu.models.thirdparty.nba.Position;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
