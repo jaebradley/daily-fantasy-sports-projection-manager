@@ -2,9 +2,9 @@ package com.rvnu.data.thirdparty.csv.rotogrinders.record.nba;
 
 import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
-import com.rvnu.models.thirdparty.nba.Position;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.rotogrinders.nba.Projection;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;

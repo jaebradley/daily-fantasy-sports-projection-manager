@@ -1,4 +1,4 @@
-package com.rvnu.models.thirdparty.nba;
+package com.rvnu.models.thirdparty.awesomeo.nba;
 
 public enum Position {
     POINT_GUARD,
