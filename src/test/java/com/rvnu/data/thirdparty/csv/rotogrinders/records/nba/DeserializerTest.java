@@ -1,9 +1,9 @@
 package com.rvnu.data.thirdparty.csv.rotogrinders.records.nba;
 
+import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
-import com.rvnu.models.thirdparty.nba.Position;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
 import com.rvnu.models.thirdparty.rotogrinders.nba.Projection;
@@ -23,8 +23,8 @@ public class DeserializerTest extends TestCase {
                     .deserialize(
                             new ByteArrayInputStream(
                                     ("""
-                                            "player_id,team,opp,pos,name,fpts,proj_own,smash,minutes,ceil,floor,min_exposure,max_exposure,rg_value,salary,custom,rg_id,partner_id"
-                                            "457688,SAS,MIL,PF,Al-Farouq Aminu,0,,0,,,,0,,-19.50,3000,0,1279,457688"
+                                            player_id,team,opp,pos,name,fpts,proj_own,smash,minutes,ceil,floor,min_exposure,max_exposure,rg_value,salary,custom,rg_id,partner_id
+                                            457688,SAS,MIL,PF,Al-Farouq Aminu,0,,0,,,,0,,-19.50,3000,0,1279,457688
                                             """).getBytes(StandardCharsets.UTF_8)
                             ),
                             (projection -> {

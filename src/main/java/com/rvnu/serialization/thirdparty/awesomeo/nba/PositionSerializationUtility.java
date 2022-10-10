@@ -1,6 +1,6 @@
 package com.rvnu.serialization.thirdparty.awesomeo.nba;
 
-import com.rvnu.models.thirdparty.nba.Position;
+import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.serialization.firstparty.enumerations.AbstractEnumeratedValuesSerializationUtility;
 import org.jetbrains.annotations.NotNull;
 

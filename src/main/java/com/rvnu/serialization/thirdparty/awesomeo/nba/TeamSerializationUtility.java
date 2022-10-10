@@ -14,7 +14,11 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
             new EnumMap<Team, String>(
                     Stream.of(
                             Map.entry(Team.GOLDEN_STATE_WARRIORS, "GSW"),
-                            Map.entry(Team.SACRAMENTO_KINGS, "SAC")
+                            Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
+                            Map.entry(Team.NEW_ORLEANS_PELICANS, "NOP"),
+                            Map.entry(Team.PHILADELPHIA_76ERS, "PHI"),
+                            Map.entry(Team.MILWAUKEE_BUCKS, "MIL"),
+                            Map.entry(Team.SAN_ANTONIO_SPURS, "SAS")
                     ).collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue))
             ),
             Team.class

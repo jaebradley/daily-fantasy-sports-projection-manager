@@ -16,7 +16,9 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
                             Map.entry(Team.SAN_ANTONIO_SPURS, "SAS"),
                             Map.entry(Team.MILWAUKEE_BUCKS, "MIL"),
                             Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
-                            Map.entry(Team.GOLDEN_STATE_WARRIORS, "GSW")
+                            Map.entry(Team.GOLDEN_STATE_WARRIORS, "GSW"),
+                            Map.entry(Team.PHILADELPHIA_76ERS, "PHI"),
+                            Map.entry(Team.NEW_ORLEANS_PELICANS, "NOP")
                     ).collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue))
             ),
             Team.class
