@@ -1,0 +1,32 @@
+name: Daily Fantasy Sports Projection Manager
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: '0 12 * * *'
+
+jobs:
+  build:
+    name: Test & Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mvn --batch-mode clean verify
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: './build/reports/jacoco/test/html/index.html'
