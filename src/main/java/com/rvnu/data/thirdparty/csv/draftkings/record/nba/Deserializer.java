@@ -4,16 +4,16 @@ import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Record;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.GameInformation;
+import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
-import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDollarsSerializationUtility;
-import com.rvnu.serialization.firstparty.numbers.PositiveIntegerSerializationUtility;
 import com.rvnu.serialization.firstparty.strings.NonEmptyStringSerializationUtility;
 import com.rvnu.serialization.thirdparty.draftkings.nba.AbbreviatedPositionsSerializationUtility;
 import com.rvnu.serialization.thirdparty.draftkings.nba.GameInformationSerializationUtility;
+import com.rvnu.serialization.thirdparty.draftkings.nba.PlayerIdSerializationUtility;
 import com.rvnu.serialization.thirdparty.draftkings.nba.TeamSerializationUtility;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +50,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     @NotNull
     private static final Deserializer INSTANCE = new Deserializer(
             new BaseValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.Name, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Name),
-            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getInstance(), Column.ID, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_ID),
+            new BaseValueDeserializer<>(PlayerIdSerializationUtility.getInstance(), Column.ID, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_ID),
             new BaseValueDeserializer<>(AbbreviatedPositionsSerializationUtility.getInstance(), Column.Roster_Position, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Roster_Position),
             new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.Salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Salary),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.TeamAbbrev, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_TeamAbbrev),
@@ -61,7 +61,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> idDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PlayerId, Column, Error> idDeserializer;
 
     @NotNull
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Set<Position>, Column, Error> eligiblePositionsDeserializer;
@@ -77,7 +77,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
 
     private Deserializer(
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> idDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PlayerId, Column, Error> idDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Set<Position>, Column, Error> eligiblePositionsDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer,

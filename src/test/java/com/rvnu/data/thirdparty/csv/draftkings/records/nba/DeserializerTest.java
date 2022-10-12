@@ -2,6 +2,7 @@ package com.rvnu.data.thirdparty.csv.draftkings.records.nba;
 
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.GameInformation;
+import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
@@ -35,7 +36,7 @@ public class DeserializerTest extends TestCase {
                                     assertEquals(
                                             new ContestPlayer(
                                                     new NonEmptyString("Joel Embiid"),
-                                                    new PositiveInteger(19760143L),
+                                                    new PlayerId(19760143L),
                                                     Set.of(Position.CENTER, Position.UTILITY),
                                                     new NonNegativeDollars(new NonNegativeDecimal(BigDecimal.valueOf(10600))),
                                                     Team.PHILADELPHIA_76ERS,
