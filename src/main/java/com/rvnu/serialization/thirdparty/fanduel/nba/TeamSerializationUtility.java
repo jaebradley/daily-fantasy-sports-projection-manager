@@ -16,6 +16,7 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
                     Stream.of(
                             Map.entry(Team.Boston_Celtics, "BOS"),
                             Map.entry(Team.Golden_State_Warriors, "GS"),
+                            Map.entry(Team.Philadelphia_76ers, "PHI"),
                             Map.entry(Team.Los_Angeles_Lakers, "LAL")
                     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
             ),

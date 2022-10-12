@@ -14,7 +14,7 @@ public record ContestPlayer(
         NonNegativeDollars salary,
         Team team,
         Team opponent,
-        InjuryIndicator injuryIndicator,
+        Optional<InjuryIndicator> injuryIndicator,
         Optional<NonEmptyString> injuryDetails
 ) {
 }

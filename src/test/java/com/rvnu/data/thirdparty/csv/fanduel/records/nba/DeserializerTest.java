@@ -37,7 +37,7 @@ public class DeserializerTest extends TestCase {
                                                     new NonNegativeDollars(new NonNegativeDecimal(new BigDecimal("10800"))),
                                                     Team.Los_Angeles_Lakers,
                                                     Team.Golden_State_Warriors,
-                                                    InjuryIndicator.Game_Time_Decision,
+                                                    Optional.of(InjuryIndicator.Game_Time_Decision),
                                                     Optional.of(new NonEmptyString("Rest"))
                                             ),
                                             contestPlayer

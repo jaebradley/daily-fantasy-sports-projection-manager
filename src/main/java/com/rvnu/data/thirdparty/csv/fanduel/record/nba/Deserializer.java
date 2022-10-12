@@ -72,7 +72,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
             new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.Salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Salary),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Team),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Opponent, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Opponent),
-            new BaseValueDeserializer<>(InjuryIndicatorSerializationUtility.getInstance(), Column.Injury_Indicator, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Injury_Indicator),
+            new BaseOptionalValueDeserializer<>(InjuryIndicatorSerializationUtility.getInstance(), Column.Injury_Indicator, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Injury_Indicator),
             new BaseOptionalValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.Injury_Details, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Injury_Details)
     );
 
@@ -98,7 +98,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> opponentDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<InjuryIndicator, Column, Error> injuryIndicatorDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Optional<InjuryIndicator>, Column, Error> injuryIndicatorDeserializer;
 
     @NotNull
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Optional<NonEmptyString>, Column, Error> injuryDetailsDeserializer;
@@ -111,7 +111,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> opponentDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<InjuryIndicator, Column, Error> injuryIndicatorDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Optional<InjuryIndicator>, Column, Error> injuryIndicatorDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Optional<NonEmptyString>, Column, Error> injuryDetailsDeserializer
     ) {
         this.idDeserializer = idDeserializer;
