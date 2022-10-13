@@ -64,7 +64,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     }
 
     private static final Deserializer INSTANCE = new Deserializer(
-            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getInstance(), Column.player_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_player_id),
+            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getDefaultInstance(), Column.player_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_player_id),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_team),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.opp, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_opp),
             new BaseValueDeserializer<>(PositionSerializationUtility.getInstance(), Column.pos, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_pos),
@@ -72,8 +72,8 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
             new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.fpts, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_fpts),
             new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.rg_value, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_rg_value),
             new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_salary),
-            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getInstance(), Column.rg_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_rg_id),
-            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getInstance(), Column.partner_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_partner_id)
+            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getDefaultInstance(), Column.rg_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_rg_id),
+            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getDefaultInstance(), Column.partner_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_partner_id)
     );
 
     @NotNull

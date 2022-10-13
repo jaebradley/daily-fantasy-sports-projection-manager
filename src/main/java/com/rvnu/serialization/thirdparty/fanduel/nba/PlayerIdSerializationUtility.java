@@ -1,6 +1,6 @@
-package com.rvnu.serialization.thirdparty.draftkings.nba;
+package com.rvnu.serialization.thirdparty.fanduel.nba;
 
-import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
+import com.rvnu.models.thirdparty.fanduel.nba.PlayerId;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.serialization.firstparty.numbers.PositiveIntegerSerializationUtility;

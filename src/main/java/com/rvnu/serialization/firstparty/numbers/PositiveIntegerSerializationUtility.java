@@ -7,15 +7,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class PositiveIntegerSerializationUtility implements Deserializer<PositiveInteger> {
+public abstract class PositiveIntegerSerializationUtility<T extends PositiveInteger> implements Deserializer<T> {
     @NotNull
-    private static final PositiveIntegerSerializationUtility INSTANCE = new PositiveIntegerSerializationUtility();
+    private static final PositiveIntegerSerializationUtility<PositiveInteger> DEFAULT_INSTANCE = new PositiveIntegerSerializationUtility<>() {
+        @Override
+        protected PositiveInteger construct(@NotNull final PositiveInteger value) {
+            return value;
+        }
+    };
 
-    private PositiveIntegerSerializationUtility() {
+    protected PositiveIntegerSerializationUtility() {
     }
 
     @Override
-    public Optional<PositiveInteger> deserialize(@NotNull final String value) {
+    public Optional<T> deserialize(@NotNull final String value) {
         final PositiveInteger integer;
         try {
             integer = new PositiveInteger(Long.parseLong(value));
@@ -23,11 +28,13 @@ public class PositiveIntegerSerializationUtility implements Deserializer<Positiv
             return Optional.empty();
         }
 
-        return Optional.of(integer);
+        return Optional.of(construct(integer));
     }
 
+    protected abstract T construct(@NotNull final PositiveInteger value);
+
     @NotNull
-    public static PositiveIntegerSerializationUtility getInstance() {
-        return INSTANCE;
+    public static PositiveIntegerSerializationUtility<PositiveInteger> getDefaultInstance() {
+        return DEFAULT_INSTANCE;
     }
 }

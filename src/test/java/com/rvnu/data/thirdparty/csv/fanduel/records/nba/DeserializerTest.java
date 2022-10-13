@@ -1,5 +1,6 @@
 package com.rvnu.data.thirdparty.csv.fanduel.records.nba;
 
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.fanduel.nba.*;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
@@ -30,8 +31,8 @@ public class DeserializerTest extends TestCase {
                                 try {
                                     assertEquals(
                                             new ContestPlayer(
-                                                    new ContestPlayerId(new PositiveInteger(81576), new PositiveInteger(9488)),
-                                                    Set.of(Position.SMALL_FORWARD, Position.POWER_FORWARD),
+                                                    new ContestPlayerId(new FixtureListId(81576), new PlayerId(9488)),
+                                                    NonEmptyLinkedHashSet.from(Set.of(Position.SMALL_FORWARD, Position.POWER_FORWARD)),
                                                     new NonEmptyString("LeBron"),
                                                     new NonEmptyString("James"),
                                                     new NonNegativeDollars(new NonNegativeDecimal(new BigDecimal("10800"))),
@@ -42,7 +43,7 @@ public class DeserializerTest extends TestCase {
                                             ),
                                             contestPlayer
                                     );
-                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive e) {
+                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive | NonEmptyLinkedHashSet.CollectionCannotBeEmpty e) {
                                     throw new RuntimeException("unexpected", e);
                                 }
                             })
