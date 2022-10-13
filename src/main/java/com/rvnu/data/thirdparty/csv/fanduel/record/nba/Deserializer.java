@@ -13,6 +13,7 @@ import com.rvnu.serialization.thirdparty.fanduel.nba.ContestPlayerIdSerializatio
 import com.rvnu.serialization.thirdparty.fanduel.nba.InjuryIndicatorSerializationUtility;
 import com.rvnu.serialization.thirdparty.fanduel.nba.PositionsSerializationUtility;
 import com.rvnu.serialization.thirdparty.fanduel.nba.TeamSerializationUtility;
+import com.rvnu.models.thirdparty.nba.Team;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 

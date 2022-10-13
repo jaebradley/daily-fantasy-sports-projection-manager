@@ -5,6 +5,7 @@ import com.rvnu.models.thirdparty.fanduel.nba.*;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
+import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import junit.framework.TestCase;
@@ -36,8 +37,8 @@ public class DeserializerTest extends TestCase {
                                                     new NonEmptyString("LeBron"),
                                                     new NonEmptyString("James"),
                                                     new NonNegativeDollars(new NonNegativeDecimal(new BigDecimal("10800"))),
-                                                    Team.Los_Angeles_Lakers,
-                                                    Team.Golden_State_Warriors,
+                                                    Team.LOS_ANGELES_LAKERS,
+                                                    Team.GOLDEN_STATE_WARRIORS,
                                                     Optional.of(InjuryIndicator.Game_Time_Decision),
                                                     Optional.of(new NonEmptyString("Rest"))
                                             ),
