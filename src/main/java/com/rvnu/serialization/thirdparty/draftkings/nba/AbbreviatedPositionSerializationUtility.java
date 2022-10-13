@@ -14,8 +14,10 @@ public class AbbreviatedPositionSerializationUtility extends AbstractEnumeratedV
                     Map.of(
                             Position.POINT_GUARD, "PG",
                             Position.SHOOTING_GUARD, "SG",
+                            Position.GUARD, "G",
                             Position.SMALL_FORWARD, "SF",
                             Position.POWER_FORWARD, "PF",
+                            Position.FORWARD, "F",
                             Position.CENTER, "C",
                             Position.UTILITY, "UTIL"
                     )

@@ -15,7 +15,9 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
                     Map.of(
                             Team.GOLDEN_STATE_WARRIORS, "GSW",
                             Team.PHILADELPHIA_76ERS, "PHI",
+                            Team.LOS_ANGELES_LAKERS, "LAL",
                             Team.MILWAUKEE_BUCKS, "MIL",
+                            Team.MINNESOTA_TIMBERWOLVES, "MIN",
                             Team.NEW_ORLEANS_PELICANS, "NOP",
                             Team.SACRAMENTO_KINGS, "SAC",
                             Team.SAN_ANTONIO_SPURS, "SAS"
