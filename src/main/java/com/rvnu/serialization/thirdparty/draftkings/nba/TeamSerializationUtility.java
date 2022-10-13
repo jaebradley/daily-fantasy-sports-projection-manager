@@ -13,6 +13,7 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
     private static final TeamSerializationUtility INSTANCE = new TeamSerializationUtility(
             new EnumMap<Team, String>(
                     Map.of(
+                            Team.BOSTON_CELTICS, "BOS",
                             Team.GOLDEN_STATE_WARRIORS, "GSW",
                             Team.PHILADELPHIA_76ERS, "PHI",
                             Team.LOS_ANGELES_LAKERS, "LAL",

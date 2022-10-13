@@ -1,6 +1,7 @@
 package com.rvnu.models.thirdparty.nba;
 
 public enum Team {
+    BOSTON_CELTICS,
     GOLDEN_STATE_WARRIORS,
     LOS_ANGELES_LAKERS,
     MILWAUKEE_BUCKS,

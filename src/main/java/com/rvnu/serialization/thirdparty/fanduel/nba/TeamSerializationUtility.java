@@ -1,6 +1,6 @@
 package com.rvnu.serialization.thirdparty.fanduel.nba;
 
-import com.rvnu.models.thirdparty.fanduel.nba.Team;
+import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.serialization.firstparty.enumerations.AbstractEnumeratedValuesSerializationUtility;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,10 +14,15 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
     private static final TeamSerializationUtility INSTANCE = new TeamSerializationUtility(
             new EnumMap<Team, String>(
                     Stream.of(
-                            Map.entry(Team.Boston_Celtics, "BOS"),
-                            Map.entry(Team.Golden_State_Warriors, "GS"),
-                            Map.entry(Team.Philadelphia_76ers, "PHI"),
-                            Map.entry(Team.Los_Angeles_Lakers, "LAL")
+                            Map.entry(Team.BOSTON_CELTICS, "BOS"),
+                            Map.entry(Team.GOLDEN_STATE_WARRIORS, "GS"),
+                            Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
+                            Map.entry(Team.NEW_ORLEANS_PELICANS, "NOP"),
+                            Map.entry(Team.PHILADELPHIA_76ERS, "PHI"),
+                            Map.entry(Team.LOS_ANGELES_LAKERS, "LAL"),
+                            Map.entry(Team.MINNESOTA_TIMBERWOLVES, "MIN"),
+                            Map.entry(Team.MILWAUKEE_BUCKS, "MIL"),
+                            Map.entry(Team.SAN_ANTONIO_SPURS, "SAS")
                     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
             ),
             Team.class

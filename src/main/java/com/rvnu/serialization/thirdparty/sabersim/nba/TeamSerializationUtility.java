@@ -14,6 +14,7 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
     private static final TeamSerializationUtility INSTANCE = new TeamSerializationUtility(
             new EnumMap<Team, String>(
                     Stream.of(
+                            Map.entry(Team.BOSTON_CELTICS, "BOS"),
                             Map.entry(Team.GOLDEN_STATE_WARRIORS, "GSW"),
                             Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
                             Map.entry(Team.NEW_ORLEANS_PELICANS, "NOP"),
