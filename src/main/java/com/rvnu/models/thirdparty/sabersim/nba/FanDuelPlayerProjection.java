@@ -1,8 +1,8 @@
 package com.rvnu.models.thirdparty.sabersim.nba;
 
 import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
-import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
-import com.rvnu.models.thirdparty.draftkings.nba.Position;
+import com.rvnu.models.thirdparty.fanduel.nba.PlayerId;
+import com.rvnu.models.thirdparty.fanduel.nba.Position;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 
-public class DraftKingsPlayerProjection extends BaseSitePlayerProjection<PlayerId, Position> {
-    public DraftKingsPlayerProjection(
+public class FanDuelPlayerProjection extends BaseSitePlayerProjection<PlayerId, Position> {
+    public FanDuelPlayerProjection(
             @NotNull final PlayerId playerId,
             @NotNull final NonEmptyString name,
             @NotNull final NonEmptyLinkedHashSet<Position> eligiblePositions,

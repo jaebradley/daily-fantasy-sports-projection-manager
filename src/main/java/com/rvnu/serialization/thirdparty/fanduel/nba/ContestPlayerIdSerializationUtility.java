@@ -1,9 +1,9 @@
 package com.rvnu.serialization.thirdparty.fanduel.nba;
 
 import com.rvnu.models.thirdparty.fanduel.nba.ContestPlayerId;
-import com.rvnu.models.thirdparty.iso.PositiveInteger;
+import com.rvnu.models.thirdparty.fanduel.nba.FixtureListId;
+import com.rvnu.models.thirdparty.fanduel.nba.PlayerId;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
-import com.rvnu.serialization.firstparty.numbers.PositiveIntegerSerializationUtility;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -11,19 +11,19 @@ import java.util.Optional;
 public class ContestPlayerIdSerializationUtility implements Deserializer<ContestPlayerId> {
     @NotNull
     private static final ContestPlayerIdSerializationUtility INSTANCE = new ContestPlayerIdSerializationUtility(
-            PositiveIntegerSerializationUtility.getInstance(),
-            PositiveIntegerSerializationUtility.getInstance()
+            FixtureListIdSerializationUtility.getInstance(),
+            PlayerIdSerializationUtility.getInstance()
     );
 
     @NotNull
-    private final Deserializer<PositiveInteger> fixtureListIdDeserializer;
+    private final Deserializer<FixtureListId> fixtureListIdDeserializer;
 
     @NotNull
-    private final Deserializer<PositiveInteger> playerIdDeserializer;
+    private final Deserializer<PlayerId> playerIdDeserializer;
 
     private ContestPlayerIdSerializationUtility(
-            @NotNull final Deserializer<PositiveInteger> fixtureListIdDeserializer,
-            @NotNull final Deserializer<PositiveInteger> playerIdDeserializer) {
+            @NotNull final Deserializer<FixtureListId> fixtureListIdDeserializer,
+            @NotNull final Deserializer<PlayerId> playerIdDeserializer) {
         this.fixtureListIdDeserializer = fixtureListIdDeserializer;
         this.playerIdDeserializer = playerIdDeserializer;
     }

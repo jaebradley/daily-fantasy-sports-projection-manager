@@ -1,5 +1,6 @@
 package com.rvnu.models.thirdparty.sabersim.nba;
 
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
@@ -7,7 +8,6 @@ import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 
 public class BaseSitePlayerProjection<SitePlayerId, SitePosition> {
@@ -18,7 +18,7 @@ public class BaseSitePlayerProjection<SitePlayerId, SitePosition> {
     private final NonEmptyString name;
 
     @NotNull
-    private final LinkedHashSet<SitePosition> eligiblePositions;
+    private final NonEmptyLinkedHashSet<SitePosition> eligiblePositions;
 
     @NotNull
     private final Team team;
@@ -38,7 +38,7 @@ public class BaseSitePlayerProjection<SitePlayerId, SitePosition> {
     public BaseSitePlayerProjection(
             @NotNull final SitePlayerId playerId,
             @NotNull final NonEmptyString name,
-            @NotNull final LinkedHashSet<SitePosition> eligiblePositions,
+            @NotNull final NonEmptyLinkedHashSet<SitePosition> eligiblePositions,
             @NotNull final Team team,
             @NotNull final Team opponent,
             @NotNull final NonNegativeDollars salary,
@@ -66,7 +66,7 @@ public class BaseSitePlayerProjection<SitePlayerId, SitePosition> {
     }
 
     @NotNull
-    public LinkedHashSet<SitePosition> getEligiblePositions() {
+    public NonEmptyLinkedHashSet<SitePosition> getEligiblePositions() {
         return eligiblePositions;
     }
 

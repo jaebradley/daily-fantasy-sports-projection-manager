@@ -3,6 +3,7 @@ package com.rvnu.data.thirdparty.csv.sabersim.record.nba;
 import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Deserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
@@ -17,7 +18,6 @@ import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
 
 public abstract class BaseDeserializer<SitePlayerId, SitePosition, PlayerProjection extends BaseSitePlayerProjection<SitePlayerId, SitePosition>> implements Deserializer<PlayerProjection, BaseDeserializer.Column, BaseDeserializer.Error> {
     public enum Column {
@@ -138,7 +138,7 @@ public abstract class BaseDeserializer<SitePlayerId, SitePosition, PlayerProject
     private final Deserializer<NonEmptyString, Column, Error> nameDeserializer;
 
     @NotNull
-    private final Deserializer<LinkedHashSet<SitePosition>, Column, Error> positionsDeserializer;
+    private final Deserializer<NonEmptyLinkedHashSet<SitePosition>, Column, Error> positionsDeserializer;
 
     @NotNull
     private final Deserializer<Team, Column, Error> teamDeserializer;
@@ -158,7 +158,7 @@ public abstract class BaseDeserializer<SitePlayerId, SitePosition, PlayerProject
     private BaseDeserializer(
             @NotNull final Deserializer<SitePlayerId, Column, Error> playerIdDeserializer,
             @NotNull final Deserializer<NonEmptyString, Column, Error> nameDeserializer,
-            @NotNull final Deserializer<LinkedHashSet<SitePosition>, Column, Error> positionsDeserializer,
+            @NotNull final Deserializer<NonEmptyLinkedHashSet<SitePosition>, Column, Error> positionsDeserializer,
             @NotNull final Deserializer<Team, Column, Error> teamDeserializer,
             @NotNull final Deserializer<Team, Column, Error> opponentDeserializer,
             @NotNull final Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
@@ -176,11 +176,11 @@ public abstract class BaseDeserializer<SitePlayerId, SitePosition, PlayerProject
     }
 
     protected BaseDeserializer(
-            @NotNull final Deserializer<SitePlayerId, Column, Error> playerIdDeserializer,
-            @NotNull final Deserializer<LinkedHashSet<SitePosition>, Column, Error> positionsDeserializer
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<SitePlayerId> playerIdDeserializer,
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<NonEmptyLinkedHashSet<SitePosition>> positionsDeserializer
     ) {
-        this.playerIdDeserializer = playerIdDeserializer;
-        this.positionsDeserializer = positionsDeserializer;
+        this.playerIdDeserializer = new BaseValueDeserializer<>(playerIdDeserializer, Column.DFS_ID, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_DFS_ID);
+        this.positionsDeserializer = new BaseValueDeserializer<>(positionsDeserializer, Column.Pos, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Pos);
 
         this.nameDeserializer = new BaseValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.Name, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Name);
         this.teamDeserializer = new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Team);
