@@ -4,8 +4,12 @@ import com.rvnu.data.firstparty.csv.record.columns.BaseOptionalValueDeserializer
 import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Record;
 import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
-import com.rvnu.models.thirdparty.fanduel.nba.*;
+import com.rvnu.models.thirdparty.fanduel.nba.ContestPlayer;
+import com.rvnu.models.thirdparty.fanduel.nba.ContestPlayerId;
+import com.rvnu.models.thirdparty.fanduel.nba.InjuryIndicator;
+import com.rvnu.models.thirdparty.fanduel.nba.Position;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
+import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDollarsSerializationUtility;
 import com.rvnu.serialization.firstparty.strings.NonEmptyStringSerializationUtility;
@@ -13,7 +17,6 @@ import com.rvnu.serialization.thirdparty.fanduel.nba.ContestPlayerIdSerializatio
 import com.rvnu.serialization.thirdparty.fanduel.nba.InjuryIndicatorSerializationUtility;
 import com.rvnu.serialization.thirdparty.fanduel.nba.PositionsSerializationUtility;
 import com.rvnu.serialization.thirdparty.fanduel.nba.TeamSerializationUtility;
-import com.rvnu.models.thirdparty.nba.Team;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 

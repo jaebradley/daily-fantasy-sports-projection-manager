@@ -14,15 +14,29 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
     private static final TeamSerializationUtility INSTANCE = new TeamSerializationUtility(
             new EnumMap<Team, String>(
                     Stream.of(
+                            Map.entry(Team.ATLANTA_HAWKS, "ATL"),
                             Map.entry(Team.BOSTON_CELTICS, "BOS"),
+                            Map.entry(Team.BROOKLYN_NETS, "BKN"),
+                            Map.entry(Team.CHARLOTTE_HORNETS, "CHA"),
+                            Map.entry(Team.CLEVELAND_CAVALIERS, "CLE"),
+                            Map.entry(Team.DALLAS_MAVERICKS, "DAL"),
+                            Map.entry(Team.DENVER_NUGGETS, "DEN"),
                             Map.entry(Team.GOLDEN_STATE_WARRIORS, "GS"),
-                            Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
-                            Map.entry(Team.NEW_ORLEANS_PELICANS, "NOP"),
+                            Map.entry(Team.INDIANA_PACERS, "IND"),
                             Map.entry(Team.PHILADELPHIA_76ERS, "PHI"),
+                            Map.entry(Team.LOS_ANGELES_CLIPPERS, "LAC"),
                             Map.entry(Team.LOS_ANGELES_LAKERS, "LAL"),
-                            Map.entry(Team.MINNESOTA_TIMBERWOLVES, "MIN"),
+                            Map.entry(Team.MIAMI_HEAT, "MIA"),
                             Map.entry(Team.MILWAUKEE_BUCKS, "MIL"),
-                            Map.entry(Team.SAN_ANTONIO_SPURS, "SAS")
+                            Map.entry(Team.MINNESOTA_TIMBERWOLVES, "MIN"),
+                            Map.entry(Team.NEW_ORLEANS_PELICANS, "NOP"),
+                            Map.entry(Team.NEW_YORK_KNICKS, "NYK"),
+                            Map.entry(Team.OKLAHOMA_CITY_THUNDER, "OKC"),
+                            Map.entry(Team.ORLANDO_MAGIC, "ORL"),
+                            Map.entry(Team.PHOENIX_SUNS, "PHX"),
+                            Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
+                            Map.entry(Team.SAN_ANTONIO_SPURS, "SAS"),
+                            Map.entry(Team.TORONTO_RAPTORS, "TOR")
                     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
             ),
             Team.class

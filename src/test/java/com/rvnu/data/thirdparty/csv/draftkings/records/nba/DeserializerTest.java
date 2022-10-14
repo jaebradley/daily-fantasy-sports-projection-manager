@@ -14,14 +14,16 @@ import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DeserializerTest extends TestCase {
 
     public void test() {
+        final AtomicInteger counter = new AtomicInteger(0);
         try {
             Deserializer
                     .getInstance()
@@ -39,7 +41,7 @@ public class DeserializerTest extends TestCase {
                                                     new NonEmptyString("Joel Embiid"),
                                                     new PlayerId(19760143L),
                                                     NonEmptyLinkedHashSet.from(List.of(Position.CENTER, Position.UTILITY)),
-                                                    new NonNegativeDollars(new NonNegativeDecimal(BigDecimal.valueOf(10600))),
+                                                    new NonNegativeDollars(new NaturalNumber(BigInteger.valueOf(10600).longValue())),
                                                     Team.PHILADELPHIA_76ERS,
                                                     new GameInformation(
                                                             Team.PHILADELPHIA_76ERS,
@@ -53,13 +55,17 @@ public class DeserializerTest extends TestCase {
                                             ),
                                             contestPlayer
                                     );
-                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive | NonEmptyLinkedHashSet.CollectionCannotBeEmpty e) {
+                                } catch (NonEmptyString.ValueMustNotBeEmpty | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive | NonEmptyLinkedHashSet.CollectionCannotBeEmpty e) {
                                     throw new RuntimeException("unexpected", e);
+                                } finally {
+                                    counter.getAndIncrement();
                                 }
                             })
                     );
         } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
+
+        assertEquals(1, counter.get());
     }
 }

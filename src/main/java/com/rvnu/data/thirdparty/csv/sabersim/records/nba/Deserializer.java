@@ -14,7 +14,7 @@ public class Deserializer {
     };
 
     @NotNull
-    private static final BaseDeserializer<com.rvnu.models.thirdparty.fanduel.nba.PlayerId, com.rvnu.models.thirdparty.fanduel.nba.Position, FanDuelPlayerProjection> FAN_DUEL_DESERIALIZER = new BaseDeserializer<>(FanDuelPlayerProjectionDeserializer.getInstance()) {
+    private static final BaseDeserializer<com.rvnu.models.thirdparty.fanduel.nba.ContestPlayerId, com.rvnu.models.thirdparty.fanduel.nba.Position, FanDuelPlayerProjection> FAN_DUEL_DESERIALIZER = new BaseDeserializer<>(FanDuelPlayerProjectionDeserializer.getInstance()) {
     };
 
     @NotNull
@@ -23,7 +23,7 @@ public class Deserializer {
     }
 
     @NotNull
-    public static BaseDeserializer<com.rvnu.models.thirdparty.fanduel.nba.PlayerId, com.rvnu.models.thirdparty.fanduel.nba.Position, FanDuelPlayerProjection> getFanDuelDeserializer() {
+    public static BaseDeserializer<com.rvnu.models.thirdparty.fanduel.nba.ContestPlayerId, com.rvnu.models.thirdparty.fanduel.nba.Position, FanDuelPlayerProjection> getFanDuelDeserializer() {
         return FAN_DUEL_DESERIALIZER;
     }
 }

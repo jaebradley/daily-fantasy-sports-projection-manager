@@ -19,8 +19,6 @@ import com.rvnu.serialization.thirdparty.draftkings.nba.TeamSerializationUtility
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
-
 public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<ContestPlayer, Deserializer.Column, Deserializer.Error> {
 
     public enum Column {
