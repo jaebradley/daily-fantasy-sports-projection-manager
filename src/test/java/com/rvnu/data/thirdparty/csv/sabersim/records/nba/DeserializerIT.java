@@ -1,8 +1,8 @@
 package com.rvnu.data.thirdparty.csv.sabersim.records.nba;
 
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -18,14 +18,14 @@ public class DeserializerIT {
                     .getDraftKingsDeserializer()
                     .deserialize(
                             inputStream,
-                            (Assertions::assertNotNull)
+                            (Assert::assertNotNull)
                     );
         } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
 
-        Assertions.assertNotNull(result);
-        Assertions.assertTrue(result.isEmpty());
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.isEmpty());
     }
 
     @Test
@@ -37,13 +37,13 @@ public class DeserializerIT {
                     .getFanDuelDeserializer()
                     .deserialize(
                             inputStream,
-                            (Assertions::assertNotNull)
+                            (Assert::assertNotNull)
                     );
         } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
 
-        Assertions.assertNotNull(result);
-        Assertions.assertTrue(result.isEmpty());
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.isEmpty());
     }
 }
