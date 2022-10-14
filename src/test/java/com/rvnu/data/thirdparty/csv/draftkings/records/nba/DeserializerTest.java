@@ -1,5 +1,6 @@
 package com.rvnu.data.thirdparty.csv.draftkings.records.nba;
 
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.GameInformation;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
@@ -16,7 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.*;
-import java.util.Set;
+import java.util.List;
 
 public class DeserializerTest extends TestCase {
 
@@ -37,7 +38,7 @@ public class DeserializerTest extends TestCase {
                                             new ContestPlayer(
                                                     new NonEmptyString("Joel Embiid"),
                                                     new PlayerId(19760143L),
-                                                    Set.of(Position.CENTER, Position.UTILITY),
+                                                    NonEmptyLinkedHashSet.from(List.of(Position.CENTER, Position.UTILITY)),
                                                     new NonNegativeDollars(new NonNegativeDecimal(BigDecimal.valueOf(10600))),
                                                     Team.PHILADELPHIA_76ERS,
                                                     new GameInformation(
@@ -52,7 +53,7 @@ public class DeserializerTest extends TestCase {
                                             ),
                                             contestPlayer
                                     );
-                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive e) {
+                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive | NonEmptyLinkedHashSet.CollectionCannotBeEmpty e) {
                                     throw new RuntimeException("unexpected", e);
                                 }
                             })

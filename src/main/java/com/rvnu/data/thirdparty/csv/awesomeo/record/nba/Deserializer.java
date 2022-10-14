@@ -2,6 +2,7 @@ package com.rvnu.data.thirdparty.csv.awesomeo.record.nba;
 
 import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
@@ -12,13 +13,12 @@ import com.rvnu.serialization.firstparty.numbers.BigDecimalSerializationUtility;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDecimalSerializationUtility;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDollarsSerializationUtility;
 import com.rvnu.serialization.firstparty.strings.NonEmptyStringSerializationUtility;
-import com.rvnu.serialization.thirdparty.awesomeo.nba.PositionSerializationUtility;
+import com.rvnu.serialization.thirdparty.awesomeo.nba.PositionsSerializationUtility;
 import com.rvnu.serialization.thirdparty.awesomeo.nba.TeamSerializationUtility;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Projection, Deserializer.Column, Deserializer.Error> {
     public enum Column {
@@ -50,7 +50,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     private static final Deserializer INSTANCE = new Deserializer(
             new BaseValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.Name, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_NAME),
             new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.Fpts, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_FPTS),
-            new BaseValueDeserializer<>(PositionSerializationUtility.getInstance(), Column.Position, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_POSITION),
+            new BaseValueDeserializer<>(PositionsSerializationUtility.getInstance(), Column.Position, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_POSITION),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Position, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_TEAM),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Position, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_OPPONENT),
             new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getInstance(), Column.Minutes, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_MINUTES),
@@ -62,7 +62,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     private Deserializer(
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Column, Error> fantasyPointsDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Position, Column, Error> positionDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> positionsDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> opponentDeserializer,
             @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDecimal, Column, Error> minutesDeserializer,
@@ -72,7 +72,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     ) {
         this.nameDeserializer = nameDeserializer;
         this.fantasyPointsDeserializer = fantasyPointsDeserializer;
-        this.positionDeserializer = positionDeserializer;
+        this.positionsDeserializer = positionsDeserializer;
         this.teamDeserializer = teamDeserializer;
         this.opponentDeserializer = opponentDeserializer;
         this.minutesDeserializer = minutesDeserializer;
@@ -88,7 +88,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Deserializer.Column, Deserializer.Error> fantasyPointsDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Position, Deserializer.Column, Deserializer.Error> positionDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Deserializer.Column, Deserializer.Error> positionsDeserializer;
 
     @NotNull
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Deserializer.Column, Deserializer.Error> teamDeserializer;
@@ -112,8 +112,8 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     public @NotNull Either<Error, Projection> deserialize(@NotNull final Record<Column> record) {
         return nameDeserializer.deserialize(record)
                 .flatMap(name -> fantasyPointsDeserializer.deserialize(record)
-                        .flatMap(fantasyPoints -> positionDeserializer.deserialize(record)
-                                .flatMap(position -> teamDeserializer.deserialize(record)
+                        .flatMap(fantasyPoints -> positionsDeserializer.deserialize(record)
+                                .flatMap(positions -> teamDeserializer.deserialize(record)
                                         .flatMap(team -> opponentDeserializer.deserialize(record)
                                                 .flatMap(opponent -> minutesDeserializer.deserialize(record)
                                                         .flatMap(minutes -> salaryDeserializer.deserialize(record)
@@ -122,8 +122,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
                                                                                 .map(value -> new Projection(
                                                                                         name,
                                                                                         fantasyPoints,
-                                                                                        // TODO @jbradley create collections deserializer
-                                                                                        Set.of(position),
+                                                                                        positions,
                                                                                         team,
                                                                                         opponent,
                                                                                         minutes,
