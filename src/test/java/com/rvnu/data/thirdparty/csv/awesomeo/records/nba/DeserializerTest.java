@@ -1,5 +1,6 @@
 package com.rvnu.data.thirdparty.csv.awesomeo.records.nba;
 
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
@@ -11,7 +12,7 @@ import junit.framework.TestCase;
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
+import java.util.List;
 
 public class DeserializerTest extends TestCase {
 
@@ -32,7 +33,7 @@ public class DeserializerTest extends TestCase {
                                             new Projection(
                                                     new NonEmptyString("Stephen Curry"),
                                                     new BigDecimal("56.41"),
-                                                    Set.of(Position.POINT_GUARD),
+                                                    NonEmptyLinkedHashSet.from(List.of(Position.POINT_GUARD)),
                                                     Team.GOLDEN_STATE_WARRIORS,
                                                     Team.SACRAMENTO_KINGS,
                                                     new NonNegativeDecimal(new BigDecimal("37.9")),
@@ -42,7 +43,7 @@ public class DeserializerTest extends TestCase {
                                             ),
                                             projection
                                     );
-                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative e) {
+                                } catch (NonEmptyString.ValueMustNotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NonEmptyLinkedHashSet.CollectionCannotBeEmpty e) {
                                     throw new RuntimeException("unexpected", e);
                                 }
                             })
