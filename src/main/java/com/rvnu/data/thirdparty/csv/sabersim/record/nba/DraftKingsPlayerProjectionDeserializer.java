@@ -8,6 +8,7 @@ import com.rvnu.models.thirdparty.sabersim.nba.DraftKingsPlayerProjection;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
 import com.rvnu.serialization.thirdparty.draftkings.nba.PlayerIdSerializationUtility;
 import com.rvnu.serialization.thirdparty.draftkings.nba.PositionsSerializationUtility;
+import com.rvnu.serialization.thirdparty.sabersim.nba.draftkings.TeamSerializationUtility;
 import org.jetbrains.annotations.NotNull;
 
 public class DraftKingsPlayerProjectionDeserializer extends BaseDeserializer<PlayerId, Position, DraftKingsPlayerProjection> {
@@ -21,7 +22,7 @@ public class DraftKingsPlayerProjectionDeserializer extends BaseDeserializer<Pla
             @NotNull final Deserializer<PlayerId> playerIdDeserializer,
             @NotNull final Deserializer<NonEmptyLinkedHashSet<Position>> positionsDeserializer
     ) {
-        super(playerIdDeserializer, positionsDeserializer);
+        super(playerIdDeserializer, positionsDeserializer, TeamSerializationUtility.getInstance(), TeamSerializationUtility.getInstance());
     }
 
     @Override

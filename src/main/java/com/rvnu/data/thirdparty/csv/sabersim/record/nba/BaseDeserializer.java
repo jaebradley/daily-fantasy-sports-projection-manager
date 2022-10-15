@@ -13,7 +13,6 @@ import com.rvnu.serialization.firstparty.numbers.BigDecimalSerializationUtility;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDecimalSerializationUtility;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDollarsSerializationUtility;
 import com.rvnu.serialization.firstparty.strings.NonEmptyStringSerializationUtility;
-import com.rvnu.serialization.thirdparty.sabersim.nba.TeamSerializationUtility;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
@@ -155,36 +154,18 @@ public abstract class BaseDeserializer<SitePlayerId, SitePosition, PlayerProject
     @NotNull
     private final Deserializer<NonNegativeDecimal, Column, Error> projectedOwnershipDeserializer;
 
-    private BaseDeserializer(
-            @NotNull final Deserializer<SitePlayerId, Column, Error> playerIdDeserializer,
-            @NotNull final Deserializer<NonEmptyString, Column, Error> nameDeserializer,
-            @NotNull final Deserializer<NonEmptyLinkedHashSet<SitePosition>, Column, Error> positionsDeserializer,
-            @NotNull final Deserializer<Team, Column, Error> teamDeserializer,
-            @NotNull final Deserializer<Team, Column, Error> opponentDeserializer,
-            @NotNull final Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
-            @NotNull final Deserializer<BigDecimal, Column, Error> projectedPointsDeserializer,
-            @NotNull final Deserializer<NonNegativeDecimal, Column, Error> projectedOwnershipDeserializer
-    ) {
-        this.playerIdDeserializer = playerIdDeserializer;
-        this.nameDeserializer = nameDeserializer;
-        this.positionsDeserializer = positionsDeserializer;
-        this.teamDeserializer = teamDeserializer;
-        this.opponentDeserializer = opponentDeserializer;
-        this.salaryDeserializer = salaryDeserializer;
-        this.projectedPointsDeserializer = projectedPointsDeserializer;
-        this.projectedOwnershipDeserializer = projectedOwnershipDeserializer;
-    }
-
     protected BaseDeserializer(
             @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<SitePlayerId> playerIdDeserializer,
-            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<NonEmptyLinkedHashSet<SitePosition>> positionsDeserializer
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<NonEmptyLinkedHashSet<SitePosition>> positionsDeserializer,
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<Team> teamDeserializer,
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<Team> opponentDeserializer
     ) {
         this.playerIdDeserializer = new BaseValueDeserializer<>(playerIdDeserializer, Column.DFS_ID, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_DFS_ID);
         this.positionsDeserializer = new BaseValueDeserializer<>(positionsDeserializer, Column.Pos, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Pos);
 
         this.nameDeserializer = new BaseValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.Name, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Name);
-        this.teamDeserializer = new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Team);
-        this.opponentDeserializer = new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Opp, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Opp);
+        this.teamDeserializer = new BaseValueDeserializer<>(teamDeserializer, Column.Team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Team);
+        this.opponentDeserializer = new BaseValueDeserializer<>(opponentDeserializer, Column.Opp, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Opp);
         this.salaryDeserializer = new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.Salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Salary);
         this.projectedPointsDeserializer = new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.SS_Proj, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_SS_Proj);
         this.projectedOwnershipDeserializer = new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getInstance(), Column.SS_Own, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_SS_Own);

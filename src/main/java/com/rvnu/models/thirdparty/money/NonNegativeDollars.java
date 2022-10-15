@@ -1,6 +1,6 @@
 package com.rvnu.models.thirdparty.money;
 
-import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
+import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import org.javamoney.moneta.Money;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +11,7 @@ public class NonNegativeDollars {
     @NotNull
     private final Money value;
 
-    public NonNegativeDollars(@NotNull final NonNegativeDecimal value) {
+    public NonNegativeDollars(@NotNull final NaturalNumber value) {
         this.value = Money.of(value.getValue(), "USD");
     }
 
