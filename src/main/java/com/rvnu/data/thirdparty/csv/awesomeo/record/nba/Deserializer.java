@@ -53,7 +53,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
             new BaseValueDeserializer<>(PositionsSerializationUtility.getInstance(), Column.Position, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_POSITION),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_TEAM),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Opponent, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_OPPONENT),
-            new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getInstance(), Column.Minutes, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_MINUTES),
+            new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getDefaultInstance(), Column.Minutes, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_MINUTES),
             new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.Salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_SALARY),
             new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.Pts_$, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_PTS_$),
             new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.Value, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_VALUE)

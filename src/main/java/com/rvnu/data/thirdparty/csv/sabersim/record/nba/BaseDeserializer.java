@@ -168,7 +168,7 @@ public abstract class BaseDeserializer<SitePlayerId, SitePosition, PlayerProject
         this.opponentDeserializer = new BaseValueDeserializer<>(opponentDeserializer, Column.Opp, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Opp);
         this.salaryDeserializer = new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.Salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_Salary);
         this.projectedPointsDeserializer = new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.SS_Proj, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_SS_Proj);
-        this.projectedOwnershipDeserializer = new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getInstance(), Column.SS_Own, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_SS_Own);
+        this.projectedOwnershipDeserializer = new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getDefaultInstance(), Column.SS_Own, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_SS_Own);
 
     }
 
