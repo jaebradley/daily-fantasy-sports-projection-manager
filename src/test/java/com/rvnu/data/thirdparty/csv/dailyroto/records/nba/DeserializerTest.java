@@ -2,8 +2,10 @@ package com.rvnu.data.thirdparty.csv.dailyroto.records.nba;
 
 import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.dailyroto.nba.Projection;
+import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
+import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;
 import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
@@ -15,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DeserializerTest extends TestCase {
@@ -37,6 +40,7 @@ public class DeserializerTest extends TestCase {
                                             new Projection<>(
                                                     Team.PHILADELPHIA_76ERS,
                                                     Team.BOSTON_CELTICS,
+                                                    Optional.of(new PlayerId(24617404)),
                                                     new NonEmptyString("Joel Embiid"),
                                                     new NonNegativeDecimal(new BigDecimal("35.5")),
                                                     new NonNegativePercentage(new BigDecimal("33.56")),
@@ -50,7 +54,7 @@ public class DeserializerTest extends TestCase {
                                             ),
                                             contestPlayer
                                     );
-                                } catch (NonEmptyString.ValueMustNotBeEmpty | NaturalNumber.ValueMustNotBeNegative | NonEmptyLinkedHashSet.CollectionCannotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NonNegativePercentage.ValueCannotBeGreaterThan100 e) {
+                                } catch (NonEmptyString.ValueMustNotBeEmpty | NaturalNumber.ValueMustNotBeNegative | NonEmptyLinkedHashSet.CollectionCannotBeEmpty | NonNegativeDecimal.ValueCannotBeNegative | NonNegativePercentage.ValueCannotBeGreaterThan100 | PositiveInteger.ValueMustBePositive e) {
                                     throw new RuntimeException("unexpected", e);
                                 }
 

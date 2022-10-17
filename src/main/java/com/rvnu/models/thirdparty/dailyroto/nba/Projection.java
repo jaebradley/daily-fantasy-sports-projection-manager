@@ -8,10 +8,12 @@ import com.rvnu.models.thirdparty.numbers.NonNegativePercentage;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
-public record Projection<SitePosition>(
+public record Projection<SitePosition, SitePlayerId>(
         Team team,
         Team opponent,
+        Optional<SitePlayerId> playerId,
         NonEmptyString name,
         NonNegativeDecimal minutesPlayed,
         NonNegativePercentage usageRate,

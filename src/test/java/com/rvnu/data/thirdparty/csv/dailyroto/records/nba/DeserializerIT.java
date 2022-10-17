@@ -26,4 +26,22 @@ public class DeserializerIT extends TestCase {
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
+
+    public void testFanDuel() {
+        final InputStream inputStream = Objects.requireNonNull(getClass().getResourceAsStream("fanduel/2022-10-18/DailyRoto_NBAProjections_2022-10-18_FanDuel.csv"));
+        final Map<BaseDeserializer.Error, PositiveInteger> result;
+        try {
+            result = Deserializer
+                    .getFanDuelDeserializer()
+                    .deserialize(
+                            inputStream,
+                            (TestCase::assertNotNull)
+                    );
+        } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
+            throw new RuntimeException("unexpected", e);
+        }
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
 }

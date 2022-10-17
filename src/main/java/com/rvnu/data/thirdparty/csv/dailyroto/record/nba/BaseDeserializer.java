@@ -1,5 +1,6 @@
 package com.rvnu.data.thirdparty.csv.dailyroto.record.nba;
 
+import com.rvnu.data.firstparty.csv.record.columns.BaseOptionalValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.interfaces.Record;
 import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
@@ -19,8 +20,9 @@ import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
-public abstract class BaseDeserializer<SitePosition> implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Projection<SitePosition>,
+public abstract class BaseDeserializer<SitePosition, SitePlayerId> implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Projection<SitePosition, SitePlayerId>,
         BaseDeserializer.Column,
         BaseDeserializer.Error> {
     public enum Column {
@@ -71,6 +73,9 @@ public abstract class BaseDeserializer<SitePosition> implements com.rvnu.data.fi
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> opponentDeserializer;
 
     @NotNull
+    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Optional<SitePlayerId>, Column, Error> playerIdDeserializer;
+
+    @NotNull
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer;
 
     @NotNull
@@ -101,10 +106,12 @@ public abstract class BaseDeserializer<SitePosition> implements com.rvnu.data.fi
     private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Column, Error> valueDeserializer;
 
     protected BaseDeserializer(
-            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<NonEmptyLinkedHashSet<SitePosition>> positionsDeserializer
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<NonEmptyLinkedHashSet<SitePosition>> positionsDeserializer,
+            @NotNull final com.rvnu.serialization.firstparty.interfaces.Deserializer<Optional<SitePlayerId>> playerIdDeserializer
     ) {
         this.teamDeserializer = new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Team, Error.COLUMN_NOT_FOUND, Error.INVALID_Team);
         this.opponentDeserializer = new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.Opp, Error.COLUMN_NOT_FOUND, Error.INVALID_Opp);
+        this.playerIdDeserializer = new BaseValueDeserializer<>(playerIdDeserializer, Column.Slate_PlayerID, Error.COLUMN_NOT_FOUND, Error.INVALID_Slate_PlayerID);
         this.nameDeserializer = new BaseValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.Player, Error.COLUMN_NOT_FOUND, Error.INVALID_Player);
         this.minutesPlayedDeserializer = new BaseValueDeserializer<>(NonNegativeDecimalSerializationUtility.getDefaultInstance(), Column.Minutes, Error.COLUMN_NOT_FOUND, Error.INVALID_Minutes);
         this.usageRateDeserializer = new BaseValueDeserializer<>(NonNegativePercentageSerializationUtility.getInstance(), Column.Usage_Rate, Error.COLUMN_NOT_FOUND, Error.INVALID_Usage_Rate);
@@ -118,32 +125,34 @@ public abstract class BaseDeserializer<SitePosition> implements com.rvnu.data.fi
     }
 
     @Override
-    public @NotNull Either<Error, Projection<SitePosition>> deserialize(@NotNull final Record<Column> record) {
+    public @NotNull Either<Error, Projection<SitePosition, SitePlayerId>> deserialize(@NotNull final Record<Column> record) {
         return teamDeserializer.deserialize(record)
                 .flatMap(team -> opponentDeserializer.deserialize(record)
-                        .flatMap(opponent -> nameDeserializer.deserialize(record)
-                                .flatMap(name -> minutesPlayedDeserializer.deserialize(record)
-                                        .flatMap(minutesPlayed -> usageRateDeserializer.deserialize(record)
-                                                .flatMap(usageRate -> reboundRateDeserializer.deserialize(record)
-                                                        .flatMap(reboundRate -> assistRateDeserializer.deserialize(record)
-                                                                .flatMap(assistRate -> positionsDeserializer.deserialize(record)
-                                                                        .flatMap(positions -> publicOwnershipPercentageDeserializer.deserialize(record)
-                                                                                .flatMap(publicOwnershipPercentage -> salaryDeserializer.deserialize(record)
-                                                                                        .flatMap(salary -> pointsDeserializer.deserialize(record)
-                                                                                                .flatMap(points -> valueDeserializer.deserialize(record)
-                                                                                                        .map(value -> new Projection<>(
-                                                                                                                team,
-                                                                                                                opponent,
-                                                                                                                name,
-                                                                                                                minutesPlayed,
-                                                                                                                usageRate,
-                                                                                                                reboundRate,
-                                                                                                                assistRate,
-                                                                                                                positions,
-                                                                                                                publicOwnershipPercentage,
-                                                                                                                salary,
-                                                                                                                points,
-                                                                                                                value
-                                                                                                        )))))))))))));
+                        .flatMap(opponent -> playerIdDeserializer.deserialize(record).flatMap(
+                                playerId -> nameDeserializer.deserialize(record)
+                                        .flatMap(name -> minutesPlayedDeserializer.deserialize(record)
+                                                .flatMap(minutesPlayed -> usageRateDeserializer.deserialize(record)
+                                                        .flatMap(usageRate -> reboundRateDeserializer.deserialize(record)
+                                                                .flatMap(reboundRate -> assistRateDeserializer.deserialize(record)
+                                                                        .flatMap(assistRate -> positionsDeserializer.deserialize(record)
+                                                                                .flatMap(positions -> publicOwnershipPercentageDeserializer.deserialize(record)
+                                                                                        .flatMap(publicOwnershipPercentage -> salaryDeserializer.deserialize(record)
+                                                                                                .flatMap(salary -> pointsDeserializer.deserialize(record)
+                                                                                                        .flatMap(points -> valueDeserializer.deserialize(record)
+                                                                                                                .map(value -> new Projection<>(
+                                                                                                                        team,
+                                                                                                                        opponent,
+                                                                                                                        playerId,
+                                                                                                                        name,
+                                                                                                                        minutesPlayed,
+                                                                                                                        usageRate,
+                                                                                                                        reboundRate,
+                                                                                                                        assistRate,
+                                                                                                                        positions,
+                                                                                                                        publicOwnershipPercentage,
+                                                                                                                        salary,
+                                                                                                                        points,
+                                                                                                                        value
+                                                                                                                ))))))))))))));
     }
 }
