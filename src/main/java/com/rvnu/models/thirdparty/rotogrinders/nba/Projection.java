@@ -17,6 +17,7 @@ public record Projection(
         BigDecimal fantasyPoints,
         NonNegativeDollars salary,
         PositiveInteger rotogrindersId,
+        // TODO: @jbradley this should be a generic ID
         PositiveInteger partnerId
 ) {
 }
