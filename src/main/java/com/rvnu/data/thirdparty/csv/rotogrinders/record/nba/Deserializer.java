@@ -1,7 +1,9 @@
 package com.rvnu.data.thirdparty.csv.rotogrinders.record.nba;
 
-import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
-import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseOptionalValueDeserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseValueDeserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
@@ -12,14 +14,15 @@ import com.rvnu.serialization.firstparty.numbers.BigDecimalSerializationUtility;
 import com.rvnu.serialization.firstparty.numbers.NonNegativeDollarsSerializationUtility;
 import com.rvnu.serialization.firstparty.numbers.PositiveIntegerSerializationUtility;
 import com.rvnu.serialization.firstparty.strings.NonEmptyStringSerializationUtility;
-import com.rvnu.serialization.thirdparty.awesomeo.nba.PositionSerializationUtility;
+import com.rvnu.serialization.thirdparty.awesomeo.nba.PositionsSerializationUtility;
 import com.rvnu.serialization.thirdparty.rotogrinders.nba.TeamSerializationUtility;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
-public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Projection, Deserializer.Column, Deserializer.Error> {
+public class Deserializer implements com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Projection, Deserializer.Column, Deserializer.Error> {
     public enum Column {
         player_id,
         team,
@@ -67,60 +70,67 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
             new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getDefaultInstance(), Column.player_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_player_id),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.team, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_team),
             new BaseValueDeserializer<>(TeamSerializationUtility.getInstance(), Column.opp, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_opp),
-            new BaseValueDeserializer<>(PositionSerializationUtility.getInstance(), Column.pos, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_pos),
+            new BaseValueDeserializer<>(PositionsSerializationUtility.getInstance(), Column.pos, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_pos),
             new BaseValueDeserializer<>(NonEmptyStringSerializationUtility.getInstance(), Column.name, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_name),
-            new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.fpts, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_fpts),
+            new BaseOptionalValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.fpts, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_fpts),
             new BaseValueDeserializer<>(BigDecimalSerializationUtility.getInstance(), Column.rg_value, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_rg_value),
             new BaseValueDeserializer<>(NonNegativeDollarsSerializationUtility.getInstance(), Column.salary, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_salary),
-            new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getDefaultInstance(), Column.rg_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_rg_id),
+            // TODO: @jbradley move this to it's own deserializer
+            new BaseValueDeserializer<>(value -> {
+                try {
+                    return Optional.of(Long.parseLong(value));
+                } catch (NumberFormatException e) {
+                    return Optional.empty();
+                }
+            }, Column.rg_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_rg_id),
             new BaseValueDeserializer<>(PositiveIntegerSerializationUtility.getDefaultInstance(), Column.partner_id, Error.COLUMN_DOES_NOT_EXIST, Error.INVALID_partner_id)
     );
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> playerIdDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<PositiveInteger, Column, Error> playerIdDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Team, Column, Error> teamDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> oppositionDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Team, Column, Error> oppositionDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Position, Column, Error> positionDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> positionsDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Column, Error> fantasyPointsDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Optional<BigDecimal>, Column, Error> fantasyPointsDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Column, Error> rotogrindersValueDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<BigDecimal, Column, Error> rotogrindersValueDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> rotogrindersIdDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Long, Column, Error> rotogrindersIdDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> partnerIdDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<PositiveInteger, Column, Error> partnerIdDeserializer;
 
     private Deserializer(
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> playerIdDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> oppositionDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Position, Column, Error> positionDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Column, Error> fantasyPointsDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<BigDecimal, Column, Error> rotogrindersValueDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> rotogrindersIdDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PositiveInteger, Column, Error> partnerIdDeserializer) {
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<PositiveInteger, Column, Error> playerIdDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Team, Column, Error> teamDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Team, Column, Error> oppositionDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> positionsDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Optional<BigDecimal>, Column, Error> fantasyPointsDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<BigDecimal, Column, Error> rotogrindersValueDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Long, Column, Error> rotogrindersIdDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<PositiveInteger, Column, Error> partnerIdDeserializer) {
         this.playerIdDeserializer = playerIdDeserializer;
         this.teamDeserializer = teamDeserializer;
         this.oppositionDeserializer = oppositionDeserializer;
-        this.positionDeserializer = positionDeserializer;
+        this.positionsDeserializer = positionsDeserializer;
         this.nameDeserializer = nameDeserializer;
         this.fantasyPointsDeserializer = fantasyPointsDeserializer;
         this.rotogrindersValueDeserializer = rotogrindersValueDeserializer;
@@ -134,8 +144,8 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
         return playerIdDeserializer.deserialize(record)
                 .flatMap(playerId -> teamDeserializer.deserialize(record)
                         .flatMap(team -> oppositionDeserializer.deserialize(record)
-                                .flatMap(opposition -> positionDeserializer.deserialize(record)
-                                        .flatMap(position -> nameDeserializer.deserialize(record)
+                                .flatMap(opposition -> positionsDeserializer.deserialize(record)
+                                        .flatMap(positions -> nameDeserializer.deserialize(record)
                                                 .flatMap(name -> fantasyPointsDeserializer.deserialize(record)
                                                         .flatMap(fantasyPoints -> rotogrindersValueDeserializer.deserialize(record)
                                                                 .flatMap(rotogrindersValue -> salaryDeserializer.deserialize(record)
@@ -145,7 +155,7 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
                                                                                                 playerId,
                                                                                                 team,
                                                                                                 opposition,
-                                                                                                position,
+                                                                                                positions,
                                                                                                 name,
                                                                                                 fantasyPoints,
                                                                                                 salary,

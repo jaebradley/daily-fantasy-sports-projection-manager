@@ -9,7 +9,6 @@ import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;
-import com.rvnu.models.thirdparty.numbers.NonNegativeDecimal;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import junit.framework.TestCase;
 
@@ -62,7 +61,7 @@ public class DeserializerTest extends TestCase {
                                 }
                             })
                     );
-        } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
+        } catch (com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
 

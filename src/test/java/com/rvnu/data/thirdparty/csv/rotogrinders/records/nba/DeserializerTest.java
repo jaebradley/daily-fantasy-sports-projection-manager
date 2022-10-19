@@ -1,5 +1,6 @@
 package com.rvnu.data.thirdparty.csv.rotogrinders.records.nba;
 
+import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
@@ -13,6 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Optional;
 
 public class DeserializerTest extends TestCase {
 
@@ -34,21 +37,21 @@ public class DeserializerTest extends TestCase {
                                                     new PositiveInteger(457688),
                                                     Team.SAN_ANTONIO_SPURS,
                                                     Team.MILWAUKEE_BUCKS,
-                                                    Position.POWER_FORWARD,
+                                                    NonEmptyLinkedHashSet.from(List.of(Position.POWER_FORWARD)),
                                                     new NonEmptyString("Al-Farouq Aminu"),
-                                                    new BigDecimal("0"),
+                                                    Optional.of(new BigDecimal("0")),
                                                     new NonNegativeDollars(new NaturalNumber(new BigInteger("3000").longValue())),
-                                                    new PositiveInteger(1279),
+                                                    1279,
                                                     new PositiveInteger(457688)
                                             ),
                                             projection
                                     );
-                                } catch (NonEmptyString.ValueMustNotBeEmpty | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive e) {
+                                } catch (NonEmptyString.ValueMustNotBeEmpty | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive | NonEmptyLinkedHashSet.CollectionCannotBeEmpty e) {
                                     throw new RuntimeException("unexpected", e);
                                 }
                             })
                     );
-        } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
+        } catch (com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
     }

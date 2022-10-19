@@ -1,7 +1,7 @@
 package com.rvnu.data.thirdparty.csv.draftkings.record.nba;
 
-import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
-import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseValueDeserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
 import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.GameInformation;
@@ -19,7 +19,7 @@ import com.rvnu.serialization.thirdparty.draftkings.nba.TeamSerializationUtility
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
-public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<ContestPlayer, Deserializer.Column, Deserializer.Error> {
+public class Deserializer implements com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<ContestPlayer, Deserializer.Column, Deserializer.Error> {
 
     public enum Column {
         Position,
@@ -57,30 +57,30 @@ public class Deserializer implements com.rvnu.data.firstparty.csv.record.interfa
     );
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PlayerId, Column, Error> idDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<PlayerId, Column, Error> idDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> eligiblePositionsDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> eligiblePositionsDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Team, Column, Error> teamDeserializer;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<GameInformation, Column, Error> gameInformationDeserializer;
+    private final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<GameInformation, Column, Error> gameInformationDeserializer;
 
     private Deserializer(
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<PlayerId, Column, Error> idDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> eligiblePositionsDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Team, Column, Error> teamDeserializer,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<GameInformation, Column, Error> gameInformationDeserializer
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyString, Column, Error> nameDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<PlayerId, Column, Error> idDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonEmptyLinkedHashSet<Position>, Column, Error> eligiblePositionsDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<NonNegativeDollars, Column, Error> salaryDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Team, Column, Error> teamDeserializer,
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<GameInformation, Column, Error> gameInformationDeserializer
     ) {
         this.nameDeserializer = nameDeserializer;
         this.idDeserializer = idDeserializer;

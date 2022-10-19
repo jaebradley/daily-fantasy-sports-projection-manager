@@ -1,13 +1,13 @@
-package com.rvnu.data.firstparty.csv.record.columns;
+package com.rvnu.data.firstparty.csv.record.deserialization.columns;
 
-import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class BaseOptionalValueDeserializer<Value, Column extends Enum<Column>, Error extends Enum<Error>> implements com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Optional<Value>, Column, Error> {
+public class BaseOptionalValueDeserializer<Value, Column extends Enum<Column>, Error extends Enum<Error>> implements com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Optional<Value>, Column, Error> {
     @NotNull
     private final com.rvnu.serialization.firstparty.interfaces.Deserializer<Value> valueDeserializer;
 

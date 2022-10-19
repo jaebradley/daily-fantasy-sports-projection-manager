@@ -1,7 +1,7 @@
-package com.rvnu.data.firstparty.csv.record.columns;
+package com.rvnu.data.firstparty.csv.record.deserialization.columns;
 
-import com.rvnu.data.firstparty.csv.record.interfaces.Deserializer;
-import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
 import io.vavr.control.Either;
 import org.jetbrains.annotations.NotNull;
 

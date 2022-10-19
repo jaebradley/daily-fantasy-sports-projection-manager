@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.awesomeo.records.nba;
 
-import com.rvnu.data.firstparty.csv.records.implementation.AbstractDeserializer;
+import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
 import org.apache.commons.csv.CSVFormat;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ public class Deserializer extends AbstractDeserializer<Projection, com.rvnu.data
     private Deserializer(
             @NotNull final Charset characterSet,
             @NotNull final CSVFormat format,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Projection, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Error> resultDeserializer
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Projection, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Error> resultDeserializer
     ) {
         super(characterSet, format, resultDeserializer);
     }

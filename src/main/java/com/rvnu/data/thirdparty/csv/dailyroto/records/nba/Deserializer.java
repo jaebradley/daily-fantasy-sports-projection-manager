@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.dailyroto.records.nba;
 
-import com.rvnu.data.firstparty.csv.records.implementation.AbstractDeserializer;
+import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.data.thirdparty.csv.dailyroto.record.nba.BaseDeserializer;
 import com.rvnu.models.thirdparty.dailyroto.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
@@ -40,7 +40,7 @@ public class Deserializer<SitePosition, SitePlayerId> extends AbstractDeserializ
 
 
     protected Deserializer(
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Projection<SitePosition, SitePlayerId>, com.rvnu.data.thirdparty.csv.dailyroto.record.nba.BaseDeserializer.Column, com.rvnu.data.thirdparty.csv.dailyroto.record.nba.BaseDeserializer.Error> resultDeserializer
+            @NotNull final com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer<Projection<SitePosition, SitePlayerId>, BaseDeserializer.Column, BaseDeserializer.Error> resultDeserializer
     ) {
         super(StandardCharsets.UTF_8, CSVFormat.DEFAULT
                         .builder()
