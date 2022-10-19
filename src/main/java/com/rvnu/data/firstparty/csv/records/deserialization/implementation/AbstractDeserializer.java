@@ -1,5 +1,6 @@
-package com.rvnu.data.firstparty.csv.records.implementation;
+package com.rvnu.data.firstparty.csv.records.deserialization.implementation;
 
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import io.vavr.control.Either;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public abstract class AbstractDeserializer<Result, Column extends Enum<Column>, Error extends Enum<Error>> implements com.rvnu.data.firstparty.csv.records.interfaces.Deserializer<Result, Error> {
+public abstract class AbstractDeserializer<Result, Column extends Enum<Column>, Error extends Enum<Error>> implements com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer<Result, Error> {
     @NotNull
     private final Charset characterSet;
 
@@ -24,12 +25,12 @@ public abstract class AbstractDeserializer<Result, Column extends Enum<Column>, 
     private final CSVFormat format;
 
     @NotNull
-    private final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Result, Column, Error> resultDeserializer;
+    private final Deserializer<Result, Column, Error> resultDeserializer;
 
     protected AbstractDeserializer(
             @NotNull final Charset characterSet,
             @NotNull final CSVFormat format,
-            @NotNull final com.rvnu.data.firstparty.csv.record.interfaces.Deserializer<Result, Column, Error> resultDeserializer
+            @NotNull final Deserializer<Result, Column, Error> resultDeserializer
     ) {
         this.characterSet = characterSet;
         this.format = format;

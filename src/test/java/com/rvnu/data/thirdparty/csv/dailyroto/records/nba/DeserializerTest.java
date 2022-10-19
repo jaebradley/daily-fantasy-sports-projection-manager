@@ -61,7 +61,7 @@ public class DeserializerTest extends TestCase {
                                 counter.getAndIncrement();
                             })
                     );
-        } catch (com.rvnu.data.firstparty.csv.records.interfaces.Deserializer.UnableToDeserializeRecords e) {
+        } catch (com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
 

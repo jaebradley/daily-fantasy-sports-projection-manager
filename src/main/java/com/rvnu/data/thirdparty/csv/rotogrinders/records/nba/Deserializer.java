@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.rotogrinders.records.nba;
 
-import com.rvnu.data.firstparty.csv.records.implementation.AbstractDeserializer;
+import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.models.thirdparty.rotogrinders.nba.Projection;
 import org.apache.commons.csv.CSVFormat;
 import org.jetbrains.annotations.NotNull;

@@ -1,8 +1,8 @@
 package com.rvnu.data.thirdparty.csv.sabersim.record.nba;
 
-import com.rvnu.data.firstparty.csv.record.columns.BaseValueDeserializer;
-import com.rvnu.data.firstparty.csv.record.interfaces.Deserializer;
-import com.rvnu.data.firstparty.csv.record.interfaces.Record;
+import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseValueDeserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
 import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;

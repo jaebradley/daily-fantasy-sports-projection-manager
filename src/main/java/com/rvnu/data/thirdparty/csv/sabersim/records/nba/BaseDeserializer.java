@@ -1,7 +1,7 @@
 package com.rvnu.data.thirdparty.csv.sabersim.records.nba;
 
-import com.rvnu.data.firstparty.csv.record.interfaces.Deserializer;
-import com.rvnu.data.firstparty.csv.records.implementation.AbstractDeserializer;
+import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Deserializer;
+import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.models.thirdparty.sabersim.nba.BaseSitePlayerProjection;
 import org.apache.commons.csv.CSVFormat;
 import org.jetbrains.annotations.NotNull;

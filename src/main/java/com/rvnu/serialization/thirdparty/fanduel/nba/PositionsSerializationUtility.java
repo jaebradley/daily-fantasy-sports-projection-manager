@@ -3,6 +3,7 @@ package com.rvnu.serialization.thirdparty.fanduel.nba;
 import com.rvnu.models.thirdparty.fanduel.nba.Position;
 import com.rvnu.serialization.firstparty.collections.NonEmptyLinkedHashSetSerializationUtility;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
+import com.rvnu.serialization.firstparty.interfaces.Serializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -11,11 +12,12 @@ import java.util.Iterator;
 public class PositionsSerializationUtility extends NonEmptyLinkedHashSetSerializationUtility<Position> {
     @NotNull
     private static final PositionsSerializationUtility INSTANCE = new PositionsSerializationUtility(
+            PositionSerializationUtility.getInstance(),
             PositionSerializationUtility.getInstance()
     );
 
-    private PositionsSerializationUtility(@NotNull final Deserializer<Position> positionDeserializer) {
-        super(positionDeserializer);
+    private PositionsSerializationUtility(@NotNull final Deserializer<Position> positionDeserializer, @NotNull final Serializer<Position> positionSerializer) {
+        super(positionDeserializer, positionSerializer);
     }
 
     @Override

@@ -3,11 +3,12 @@ package com.rvnu.serialization.firstparty.numbers;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
+import com.rvnu.serialization.firstparty.interfaces.Serializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class PositiveIntegerSerializationUtility<T extends PositiveInteger> implements Deserializer<T> {
+public abstract class PositiveIntegerSerializationUtility<T extends PositiveInteger> implements Deserializer<T>, Serializer<T> {
     @NotNull
     private static final PositiveIntegerSerializationUtility<PositiveInteger> DEFAULT_INSTANCE = new PositiveIntegerSerializationUtility<>() {
         @Override
@@ -29,6 +30,11 @@ public abstract class PositiveIntegerSerializationUtility<T extends PositiveInte
         }
 
         return Optional.of(construct(integer));
+    }
+
+    @Override
+    public String serialize(@NotNull final T value) {
+        return Long.toString(value.getValue());
     }
 
     protected abstract T construct(@NotNull final PositiveInteger value);

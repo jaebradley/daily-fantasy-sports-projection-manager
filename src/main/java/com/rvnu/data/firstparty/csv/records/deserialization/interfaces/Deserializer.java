@@ -1,4 +1,4 @@
-package com.rvnu.data.firstparty.csv.records.interfaces;
+package com.rvnu.data.firstparty.csv.records.deserialization.interfaces;
 
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 

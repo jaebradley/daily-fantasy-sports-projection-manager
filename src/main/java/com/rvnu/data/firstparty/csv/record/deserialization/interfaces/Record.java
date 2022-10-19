@@ -1,4 +1,4 @@
-package com.rvnu.data.firstparty.csv.record.interfaces;
+package com.rvnu.data.firstparty.csv.record.deserialization.interfaces;
 
 import java.util.Optional;
 

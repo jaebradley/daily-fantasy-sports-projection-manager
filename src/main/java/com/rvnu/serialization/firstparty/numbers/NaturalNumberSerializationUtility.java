@@ -2,6 +2,7 @@ package com.rvnu.serialization.firstparty.numbers;
 
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
+import com.rvnu.serialization.firstparty.interfaces.Serializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
@@ -9,7 +10,7 @@ import java.text.ParseException;
 import java.util.Locale;
 import java.util.Optional;
 
-public abstract class NaturalNumberSerializationUtility<T extends NaturalNumber> implements Deserializer<T> {
+public abstract class NaturalNumberSerializationUtility<T extends NaturalNumber> implements Deserializer<T>, Serializer<T> {
     @NotNull
     private static final NaturalNumberSerializationUtility<NaturalNumber> DEFAULT_INSTANCE = new NaturalNumberSerializationUtility<>(NumberFormat.getIntegerInstance(Locale.US)) {
         @Override
@@ -35,6 +36,11 @@ public abstract class NaturalNumberSerializationUtility<T extends NaturalNumber>
         }
 
         return Optional.of(construct(integer));
+    }
+
+    @Override
+    public String serialize(@NotNull final T value) {
+        return format.format(value.getValue());
     }
 
     @NotNull
