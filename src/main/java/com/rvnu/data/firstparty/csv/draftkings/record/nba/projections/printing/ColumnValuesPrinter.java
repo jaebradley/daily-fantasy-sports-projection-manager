@@ -80,7 +80,7 @@ public class ColumnValuesPrinter implements com.rvnu.data.firstparty.csv.record.
                         Map.entry(Printer.Column.Positions, positionsSerializer.serialize(value.contestPlayer().eligiblePositions())),
                         Map.entry(Printer.Column.StokasticProjection, value.awesomeo().map(Projection::fantasyPoints).map(stokasticProjectionSerializer::serialize).orElse("")),
                         Map.entry(Printer.Column.DailyRotoProjection, value.dailyRoto().map(com.rvnu.models.thirdparty.dailyroto.nba.Projection::points).map(dailyRotoProjectionSerializer::serialize).orElse("")),
-                        Map.entry(Printer.Column.RotoGrindersProjection, ""),
+                        Map.entry(Printer.Column.RotoGrindersProjection, value.rotogrinders().flatMap(com.rvnu.models.thirdparty.rotogrinders.nba.Projection::fantasyPoints).map(rotogrindersProjectionSerializer::serialize).orElse("")),
                         Map.entry(Printer.Column.SaberSimProjection, value.sabersim().map(com.rvnu.models.thirdparty.sabersim.nba.DraftKingsPlayerProjection::getProjectedPoints).map(sabersimProjectionSerializer::serialize).orElse(""))
                 ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
         );

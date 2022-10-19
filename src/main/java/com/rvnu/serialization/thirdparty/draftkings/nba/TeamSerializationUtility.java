@@ -18,6 +18,7 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
                             Map.entry(Team.ATLANTA_HAWKS, "ATL"),
                             Map.entry(Team.BOSTON_CELTICS, "BOS"),
                             Map.entry(Team.BROOKLYN_NETS, "BKN"),
+                            Map.entry(Team.CHICAGO_BULLS, "CHI"),
                             Map.entry(Team.CHARLOTTE_HORNETS, "CHA"),
                             Map.entry(Team.CLEVELAND_CAVALIERS, "CLE"),
                             Map.entry(Team.DALLAS_MAVERICKS, "DAL"),
@@ -37,7 +38,13 @@ public class TeamSerializationUtility extends AbstractEnumeratedValuesSerializat
                             Map.entry(Team.PHOENIX_SUNS, "PHX"),
                             Map.entry(Team.SACRAMENTO_KINGS, "SAC"),
                             Map.entry(Team.SAN_ANTONIO_SPURS, "SAS"),
-                            Map.entry(Team.TORONTO_RAPTORS, "TOR")
+                            Map.entry(Team.TORONTO_RAPTORS, "TOR"),
+                            Map.entry(Team.DETROIT_PISTONS, "DET"),
+                            Map.entry(Team.HOUSTON_ROCKETS, "HOU"),
+                            Map.entry(Team.MEMPHIS_GRIZZLIES, "MEM"),
+                            Map.entry(Team.UTAH_JAZZ, "UTA"),
+                            Map.entry(Team.WASHINGTON_WIZARDS, "WAS"),
+                            Map.entry(Team.PORTLAND_TRAILBLAZERS, "POR")
                     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
             ),
             Team.class

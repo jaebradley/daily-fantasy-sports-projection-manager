@@ -104,12 +104,12 @@ public class ProjectionsMerger {
         }
 
         final Map<com.rvnu.data.thirdparty.csv.rotogrinders.record.nba.Deserializer.Error, PositiveInteger> rotogrindersResult;
-        final Map<PositiveInteger, com.rvnu.models.thirdparty.rotogrinders.nba.Projection> rotogrindersProjectsionById = new HashMap<>();
+        final Map<NonEmptyString, com.rvnu.models.thirdparty.rotogrinders.nba.Projection> rotogrindersProjectsionById = new HashMap<>();
         try (final FileInputStream fileInputStream = new FileInputStream(rotogrindersDraftKingsProjectionsCsv)) {
             rotogrindersResult = rotogrindersDeserializer.deserialize(
                     fileInputStream,
                     projection -> {
-                        if (null != rotogrindersProjectsionById.put(projection.partnerId(), projection)) {
+                        if (null != rotogrindersProjectsionById.put(projection.name(), projection)) {
                             throw new RuntimeException("duplicate projection");
                         }
                     }
@@ -122,8 +122,9 @@ public class ProjectionsMerger {
         }
 
         final Map<PlayerId, DraftKingsPlayerProjection> sabersimProjectionsById = new HashMap<>();
+        final Map<BaseDeserializer.Error, PositiveInteger> sabersimResults;
         try (final FileInputStream fileInputStream = new FileInputStream(sabersimDraftKingsProjectionsCsv)) {
-            sabersimDeserializer.deserialize(
+            sabersimResults = sabersimDeserializer.deserialize(
                     fileInputStream,
                     draftKingsPlayerProjection -> {
                         if (null != sabersimProjectionsById.put(draftKingsPlayerProjection.getPlayerId(), draftKingsPlayerProjection)) {
@@ -134,13 +135,14 @@ public class ProjectionsMerger {
         } catch (IOException | com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
-        if (sabersimProjectionsById.isEmpty()) {
+        if (sabersimProjectionsById.isEmpty() || !sabersimResults.isEmpty()) {
             throw new RuntimeException("errors when parsing Sabersim");
         }
 
         final Map<PlayerId, com.rvnu.models.thirdparty.dailyroto.nba.Projection<Position, PlayerId>> dailyRotoProjectionsByPlayerId = new HashMap<>();
+        final Map<com.rvnu.data.thirdparty.csv.dailyroto.record.nba.BaseDeserializer.Error, PositiveInteger> dailyRotoResults;
         try (final FileInputStream fileInputStream = new FileInputStream(dailyRotoDraftKingsProjectionsCsv)) {
-            dailyRotoDeserializer.deserialize(
+            dailyRotoResults = dailyRotoDeserializer.deserialize(
                     fileInputStream,
                     draftKingsPlayerProjection -> {
                         draftKingsPlayerProjection.playerId().ifPresent(
@@ -155,8 +157,8 @@ public class ProjectionsMerger {
         } catch (IOException | com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
         }
-        if (sabersimProjectionsById.isEmpty()) {
-            throw new RuntimeException("errors when parsing Sabersim");
+        if (dailyRotoProjectionsByPlayerId.isEmpty() || !dailyRotoResults.isEmpty()) {
+//            throw new RuntimeException("errors when parsing DailyRoto");
         }
 
         final Map<PlayerId, Projections> projectionsByPlayerId = new HashMap<>();
@@ -167,14 +169,14 @@ public class ProjectionsMerger {
                         new Projections(
                                 e.getValue(),
                                 Optional.ofNullable(awesomeoProjectionsByName.get(e.getValue().name())),
-                                Optional.ofNullable(rotogrindersProjectsionById.get(new PlayerId(e.getKey().getValue()))),
+                                Optional.ofNullable(rotogrindersProjectsionById.get(e.getValue().name())),
                                 Optional.ofNullable(sabersimProjectionsById.get(e.getKey())),
                                 Optional.ofNullable(dailyRotoProjectionsByPlayerId.get(e.getKey()))
                         )
                 )) {
                     throw new RuntimeException("duplicate players");
                 }
-            } catch (NoSuchElementException | NaturalNumber.ValueMustNotBeNegative | PositiveInteger.ValueMustBePositive ex) {
+            } catch (NoSuchElementException ex) {
                 throw new RuntimeException("unexpected", ex);
             }
         }
