@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 
 public class DeserializerTest extends TestCase {
 
@@ -39,7 +38,7 @@ public class DeserializerTest extends TestCase {
                                                     Team.MILWAUKEE_BUCKS,
                                                     NonEmptyLinkedHashSet.from(List.of(Position.POWER_FORWARD)),
                                                     new NonEmptyString("Al-Farouq Aminu"),
-                                                    Optional.of(new BigDecimal("0")),
+                                                    BigDecimal.ZERO,
                                                     new NonNegativeDollars(new NaturalNumber(new BigInteger("3000").longValue())),
                                                     1279,
                                                     new PositiveInteger(457688)

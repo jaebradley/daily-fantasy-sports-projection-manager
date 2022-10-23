@@ -1,5 +1,8 @@
 package com.rvnu.applications.nba.draftkings;
 
+import com.rvnu.calculators.firstparty.draftkings.nba.interfaces.ProjectionsEvaluator;
+import com.rvnu.calculators.thirdparty.stokastic.draftkings.nba.implementation.ContestPlayerNameToProjectionNameTranslator;
+import com.rvnu.calculators.thirdparty.stokastic.draftkings.nba.implementation.ProjectionIdentifier;
 import com.rvnu.data.firstparty.csv.draftkings.record.nba.projections.printing.DraftKingsProjectionsPrinter;
 import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.data.thirdparty.csv.draftkings.record.nba.Deserializer;
@@ -8,7 +11,6 @@ import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
-import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.sabersim.nba.DraftKingsPlayerProjection;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
@@ -158,25 +160,26 @@ public class ProjectionsMerger {
             throw new RuntimeException("unexpected", e);
         }
         if (dailyRotoProjectionsByPlayerId.isEmpty() || !dailyRotoResults.isEmpty()) {
-//            throw new RuntimeException("errors when parsing DailyRoto");
+            throw new RuntimeException("errors when parsing DailyRoto");
         }
+
+        final ProjectionsEvaluator evaluator = new com.rvnu.calculators.firstparty.draftkings.nba.implementation.ProjectionsEvaluator(
+                new ProjectionIdentifier(awesomeoProjectionsByName, ContestPlayerNameToProjectionNameTranslator.getInstance()::apply),
+                contestPlayerIdentifier -> Optional.ofNullable(rotogrindersProjectsionById.get(contestPlayerIdentifier)),
+                contestPlayerIdentifier -> Optional.ofNullable(sabersimProjectionsById.get(contestPlayerIdentifier)),
+                contestPlayerIdentifier -> Optional.ofNullable(dailyRotoProjectionsByPlayerId.get(contestPlayerIdentifier))
+        );
 
         final Map<PlayerId, Projections> projectionsByPlayerId = new HashMap<>();
         for (final Map.Entry<PlayerId, ContestPlayer> e : playersById.entrySet()) {
             try {
                 if (null != projectionsByPlayerId.put(
                         e.getKey(),
-                        new Projections(
-                                e.getValue(),
-                                Optional.ofNullable(awesomeoProjectionsByName.get(e.getValue().name())),
-                                Optional.ofNullable(rotogrindersProjectsionById.get(e.getValue().name())),
-                                Optional.ofNullable(sabersimProjectionsById.get(e.getKey())),
-                                Optional.ofNullable(dailyRotoProjectionsByPlayerId.get(e.getKey()))
-                        )
+                        evaluator.evaluateProjections(e.getValue())
                 )) {
                     throw new RuntimeException("duplicate players");
                 }
-            } catch (NoSuchElementException ex) {
+            } catch (NoSuchElementException | ProjectionsEvaluator.UnableToEvaluateProjections ex) {
                 throw new RuntimeException("unexpected", ex);
             }
         }

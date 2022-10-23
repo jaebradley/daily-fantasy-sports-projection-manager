@@ -16,7 +16,7 @@ public record Projection(
         Team opposition,
         NonEmptyLinkedHashSet<Position> positions,
         NonEmptyString name,
-        Optional<BigDecimal> fantasyPoints,
+        BigDecimal fantasyPoints,
         NonNegativeDollars salary,
         long rotogrindersId,
         // TODO: @jbradley this should be a generic ID
