@@ -146,15 +146,13 @@ public class ProjectionsMerger {
         try (final FileInputStream fileInputStream = new FileInputStream(dailyRotoDraftKingsProjectionsCsv)) {
             dailyRotoResults = dailyRotoDeserializer.deserialize(
                     fileInputStream,
-                    draftKingsPlayerProjection -> {
-                        draftKingsPlayerProjection.playerId().ifPresent(
-                                playerId -> {
-                                    if (null != dailyRotoProjectionsByPlayerId.put(playerId, draftKingsPlayerProjection)) {
-                                        throw new RuntimeException("duplicate projection");
-                                    }
+                    draftKingsPlayerProjection -> draftKingsPlayerProjection.playerId().ifPresent(
+                            playerId -> {
+                                if (null != dailyRotoProjectionsByPlayerId.put(playerId, draftKingsPlayerProjection)) {
+                                    throw new RuntimeException("duplicate projection");
                                 }
-                        );
-                    }
+                            }
+                    )
             );
         } catch (IOException | com.rvnu.data.firstparty.csv.records.deserialization.interfaces.Deserializer.UnableToDeserializeRecords e) {
             throw new RuntimeException("unexpected", e);
