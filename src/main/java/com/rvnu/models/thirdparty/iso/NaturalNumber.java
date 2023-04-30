@@ -6,6 +6,16 @@ public class NaturalNumber {
     public static class ValueMustNotBeNegative extends Exception {
     }
 
+    public static final NaturalNumber ZERO;
+
+    static {
+        try {
+            ZERO = new NaturalNumber(0);
+        } catch (final ValueMustNotBeNegative e) {
+            throw new RuntimeException("unexpected", e);
+        }
+    }
+
     private final long value;
 
     public NaturalNumber(final long value) throws ValueMustNotBeNegative {
