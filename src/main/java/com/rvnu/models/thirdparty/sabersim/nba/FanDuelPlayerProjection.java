@@ -1,6 +1,6 @@
 package com.rvnu.models.thirdparty.sabersim.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.fanduel.nba.ContestPlayerId;
 import com.rvnu.models.thirdparty.fanduel.nba.Position;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;

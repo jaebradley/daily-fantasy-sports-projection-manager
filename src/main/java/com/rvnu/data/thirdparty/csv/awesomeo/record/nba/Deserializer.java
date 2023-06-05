@@ -2,7 +2,7 @@ package com.rvnu.data.thirdparty.csv.awesomeo.record.nba;
 
 import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;

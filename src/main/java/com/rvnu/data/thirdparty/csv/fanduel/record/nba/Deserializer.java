@@ -3,7 +3,7 @@ package com.rvnu.data.thirdparty.csv.fanduel.record.nba;
 import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseOptionalValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.fanduel.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.fanduel.nba.ContestPlayerId;
 import com.rvnu.models.thirdparty.fanduel.nba.InjuryIndicator;

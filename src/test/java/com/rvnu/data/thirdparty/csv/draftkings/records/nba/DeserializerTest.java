@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.draftkings.records.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.GameInformation;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;

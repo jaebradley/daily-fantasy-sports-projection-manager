@@ -2,7 +2,7 @@ package com.rvnu.data.thirdparty.csv.draftkings.record.nba;
 
 import com.rvnu.data.firstparty.csv.record.deserialization.columns.BaseValueDeserializer;
 import com.rvnu.data.firstparty.csv.record.deserialization.interfaces.Record;
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.GameInformation;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;

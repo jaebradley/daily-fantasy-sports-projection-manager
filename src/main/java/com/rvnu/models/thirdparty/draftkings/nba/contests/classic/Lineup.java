@@ -1,6 +1,6 @@
 package com.rvnu.models.thirdparty.draftkings.nba.contests.classic;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;

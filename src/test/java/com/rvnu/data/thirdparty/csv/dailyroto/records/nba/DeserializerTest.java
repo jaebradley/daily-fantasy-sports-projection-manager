@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.dailyroto.records.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.dailyroto.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;

@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.fanduel.records.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.fanduel.nba.*;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;

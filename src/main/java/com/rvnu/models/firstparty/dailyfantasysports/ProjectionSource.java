@@ -1,4 +1,4 @@
-package com.rvnu.models.firstparty;
+package com.rvnu.models.firstparty.dailyfantasysports;
 
 public enum ProjectionSource {
     Stokastic,

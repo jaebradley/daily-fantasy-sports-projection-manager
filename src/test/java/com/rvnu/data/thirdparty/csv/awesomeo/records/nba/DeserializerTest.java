@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.awesomeo.records.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
