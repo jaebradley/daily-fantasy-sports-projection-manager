@@ -1,5 +1,6 @@
 package com.rvnu.applications.nba.draftkings;
 
+import com.google.common.collect.MinMaxPriorityQueue;
 import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryCalculator;
 import com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryValidator;
 import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
@@ -20,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class ProjectionLineupGenerator {
@@ -167,7 +169,12 @@ public class ProjectionLineupGenerator {
                                     projectionsByPosition.put(RequiredLineupPosition.UTILITY, projections);
                                 }
                         ));
-        final Set<Lineup<NonEmptyString, RequiredLineupPosition>> lineups = new HashSet<>();
+        final MinMaxPriorityQueue<Map.Entry<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal>> lineups = MinMaxPriorityQueue
+                .<Map.Entry<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal>>orderedBy(Map.Entry.comparingByValue())
+                .maximumSize(10)
+                .create();
+        final Set<Set<NonEmptyString>> seenLineups = new HashSet<>();
+        final AtomicLong counter = new AtomicLong(0);
         for (final Projection pointGuardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.POINT_GUARD, Collections.emptySet())) {
             Lineup<NonEmptyString, RequiredLineupPosition> lineup = Lineup.withPlayer(pointGuardProjection.name(), RequiredLineupPosition.POINT_GUARD, pointGuardProjection.name(), pointGuardProjection.salary());
             if (salaryValidator.lineupHasValidSalary(lineup)) {
@@ -228,10 +235,18 @@ public class ProjectionLineupGenerator {
                                                                 for (final Projection utilityProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.UTILITY, Collections.emptySet())) {
                                                                     try {
                                                                         lineup = lineup.addPlayer(utilityProjection.name(), RequiredLineupPosition.UTILITY, utilityProjection.name(), utilityProjection.salary());
-                                                                        if (salaryValidator.lineupHasValidSalary(lineup)) {
-                                                                            lineups.add(lineup);
-                                                                            if (0 == (lineups.size() % 1_000_000L)) {
-                                                                                System.out.println("Lineups collected: " + lineups.size());
+                                                                        if (salaryValidator.lineupHasValidSalary(lineup) && seenLineups.add(lineup.getDetailsByIdentifier().keySet())) {
+                                                                            final BigDecimal points = lineup
+                                                                                    .getDetailsByIdentifier()
+                                                                                    .keySet()
+                                                                                    .stream()
+                                                                                    .map(playerId -> Optional.ofNullable(awesomeoProjectionsByName.get(playerId)).orElseThrow())
+                                                                                    .map(Projection::fantasyPoints)
+                                                                                    .reduce(BigDecimal.ZERO, BigDecimal::subtract);
+                                                                            lineups.add(Map.entry(lineup, points));
+                                                                            final long count = counter.incrementAndGet();
+                                                                            if (0 == (count % 1_000_000L)) {
+                                                                                System.out.println("Lineups collected: " + count);
                                                                             }
                                                                         }
                                                                         lineup = lineup.removePlayer(utilityProjection.name());
@@ -262,28 +277,7 @@ public class ProjectionLineupGenerator {
             lineup = lineup.removePlayer(pointGuardProjection.name());
         }
 
-        final Map<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal> pointsByLineup = lineups
-                .stream()
-                .map(lineup -> Map.entry(
-                        lineup,
-                        lineup
-                                .getDetailsByIdentifier()
-                                .keySet()
-                                .stream()
-                                .map(playerId -> Optional.ofNullable(awesomeoProjectionsByName.get(playerId)).orElseThrow())
-                                .map(Projection::fantasyPoints)
-                                .reduce(BigDecimal.ZERO, BigDecimal::subtract)))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        final PriorityQueue<Map.Entry<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal>> orderedLineups = new PriorityQueue<>(pointsByLineup.size(), Map.Entry.comparingByValue());
-        orderedLineups.addAll(pointsByLineup.entrySet());
-        final Set<Lineup<NonEmptyString, RequiredLineupPosition>> result = new HashSet<>();
-        for (
-                int i = 0;
-                i < 10; i += 1) {
-            result.add(orderedLineups.remove().getKey());
-        }
-        return result;
+        return lineups.stream().map(Map.Entry::getKey).collect(Collectors.toSet());
     }
 
     public static void main(@NotNull final String[] args) {
