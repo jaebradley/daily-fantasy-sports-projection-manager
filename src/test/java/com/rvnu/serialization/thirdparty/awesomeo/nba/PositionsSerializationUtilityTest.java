@@ -1,6 +1,6 @@
 package com.rvnu.serialization.thirdparty.awesomeo.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.awesomeo.nba.Position;
 import junit.framework.TestCase;
 

@@ -1,6 +1,6 @@
 package com.rvnu.serialization.thirdparty.draftkings.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
 import io.vavr.collection.Map;
 import junit.framework.TestCase;

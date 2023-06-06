@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class NonNegativeDollars {
+    public static final NonNegativeDollars ZERO = new NonNegativeDollars(NaturalNumber.ZERO);
 
     @NotNull
     private final Money value;

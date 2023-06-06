@@ -1,6 +1,6 @@
 package com.rvnu.data.thirdparty.csv.sabersim.record.nba;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
 import com.rvnu.models.thirdparty.sabersim.nba.BaseSitePlayerProjection;

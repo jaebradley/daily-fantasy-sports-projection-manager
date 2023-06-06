@@ -1,6 +1,6 @@
 package com.rvnu.serialization.firstparty.collections;
 
-import com.rvnu.models.firstparty.NonEmptyLinkedHashSet;
+import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
 import com.rvnu.serialization.firstparty.interfaces.Deserializer;
 import com.rvnu.serialization.firstparty.interfaces.Serializer;
 import org.jetbrains.annotations.NotNull;
