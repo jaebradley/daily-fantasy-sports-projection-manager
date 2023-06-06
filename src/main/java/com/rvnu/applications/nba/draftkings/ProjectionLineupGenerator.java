@@ -1,6 +1,7 @@
 package com.rvnu.applications.nba.draftkings;
 
 import com.google.common.collect.MinMaxPriorityQueue;
+import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupGenerator;
 import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryCalculator;
 import com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryValidator;
 import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
@@ -20,12 +21,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class ProjectionLineupGenerator {
-    enum RequiredLineupPosition {
+    public enum RequiredLineupPosition {
         POINT_GUARD,
         SHOOTING_GUARD,
         SMALL_FORWARD,
@@ -173,109 +177,16 @@ public class ProjectionLineupGenerator {
                 .<Map.Entry<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal>>orderedBy(Map.Entry.comparingByValue())
                 .maximumSize(10)
                 .create();
-        final Set<Set<NonEmptyString>> seenLineups = new HashSet<>();
         final AtomicLong counter = new AtomicLong(0);
-        for (final Projection pointGuardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.POINT_GUARD, Collections.emptySet())) {
-            Lineup<NonEmptyString, RequiredLineupPosition> lineup = Lineup.withPlayer(pointGuardProjection.name(), RequiredLineupPosition.POINT_GUARD, pointGuardProjection.name(), pointGuardProjection.salary());
-            if (salaryValidator.lineupHasValidSalary(lineup)) {
-                for (final Projection shootingGuardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.SHOOTING_GUARD, Collections.emptySet())) {
-                    try {
-                        lineup = lineup.addPlayer(shootingGuardProjection.name(), RequiredLineupPosition.SHOOTING_GUARD, shootingGuardProjection.name(), shootingGuardProjection.salary());
-                    } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                        throw new RuntimeException("unexpected", e);
-                    } catch (Lineup.PlayerAlreadyExists e) {
-                        continue;
+        final LineupGenerator lineupGenerator = new LineupGenerator(projectionsByPosition, salaryValidator);
+        lineupGenerator.generateLineup(
+                lineup -> {
+                    final long count = counter.incrementAndGet();
+                    if (0 == (count % 1_000_000L)) {
+                        System.out.println("Count is " + count);
                     }
-                    if (salaryValidator.lineupHasValidSalary(lineup)) {
-                        for (final Projection smallForwardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.SMALL_FORWARD, Collections.emptySet())) {
-                            try {
-                                lineup = lineup.addPlayer(smallForwardProjection.name(), RequiredLineupPosition.SMALL_FORWARD, smallForwardProjection.name(), smallForwardProjection.salary());
-                            } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                                throw new RuntimeException("unexpected", e);
-                            } catch (Lineup.PlayerAlreadyExists e) {
-                                continue;
-                            }
-                            if (salaryValidator.lineupHasValidSalary(lineup)) {
-                                for (final Projection powerForwardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.POWER_FORWARD, Collections.emptySet())) {
-                                    try {
-                                        lineup = lineup.addPlayer(powerForwardProjection.name(), RequiredLineupPosition.POWER_FORWARD, powerForwardProjection.name(), powerForwardProjection.salary());
-                                    } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                                        throw new RuntimeException("unexpected", e);
-                                    } catch (Lineup.PlayerAlreadyExists e) {
-                                        continue;
-                                    }
-                                    if (salaryValidator.lineupHasValidSalary(lineup)) {
-                                        for (final Projection centerProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.CENTER, Collections.emptySet())) {
-                                            try {
-                                                lineup = lineup.addPlayer(centerProjection.name(), RequiredLineupPosition.CENTER, centerProjection.name(), centerProjection.salary());
-                                            } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                                                throw new RuntimeException("unexpected", e);
-                                            } catch (Lineup.PlayerAlreadyExists e) {
-                                                continue;
-                                            }
-                                            if (salaryValidator.lineupHasValidSalary(lineup)) {
-                                                for (final Projection guardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.GUARD, Collections.emptySet())) {
-                                                    try {
-                                                        lineup = lineup.addPlayer(guardProjection.name(), RequiredLineupPosition.GUARD, guardProjection.name(), guardProjection.salary());
-                                                    } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                                                        throw new RuntimeException("unexpected", e);
-                                                    } catch (Lineup.PlayerAlreadyExists e) {
-                                                        continue;
-                                                    }
-                                                    if (salaryValidator.lineupHasValidSalary(lineup)) {
-                                                        for (final Projection forwardProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.FORWARD, Collections.emptySet())) {
-                                                            try {
-                                                                lineup = lineup.addPlayer(forwardProjection.name(), RequiredLineupPosition.FORWARD, forwardProjection.name(), forwardProjection.salary());
-                                                            } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                                                                throw new RuntimeException("unexpected", e);
-                                                            } catch (Lineup.PlayerAlreadyExists e) {
-                                                                continue;
-                                                            }
-                                                            if (salaryValidator.lineupHasValidSalary(lineup)) {
-                                                                for (final Projection utilityProjection : projectionsByPosition.getOrDefault(RequiredLineupPosition.UTILITY, Collections.emptySet())) {
-                                                                    try {
-                                                                        lineup = lineup.addPlayer(utilityProjection.name(), RequiredLineupPosition.UTILITY, utilityProjection.name(), utilityProjection.salary());
-                                                                        if (salaryValidator.lineupHasValidSalary(lineup) && seenLineups.add(lineup.getDetailsByIdentifier().keySet())) {
-                                                                            final BigDecimal points = lineup
-                                                                                    .getDetailsByIdentifier()
-                                                                                    .keySet()
-                                                                                    .stream()
-                                                                                    .map(playerId -> Optional.ofNullable(awesomeoProjectionsByName.get(playerId)).orElseThrow())
-                                                                                    .map(Projection::fantasyPoints)
-                                                                                    .reduce(BigDecimal.ZERO, BigDecimal::subtract);
-                                                                            lineups.add(Map.entry(lineup, points));
-                                                                            final long count = counter.incrementAndGet();
-                                                                            if (0 == (count % 1_000_000L)) {
-                                                                                System.out.println("Lineups collected: " + count);
-                                                                            }
-                                                                        }
-                                                                        lineup = lineup.removePlayer(utilityProjection.name());
-                                                                    } catch (Lineup.PlayerAlreadyExistsForPosition e) {
-                                                                        throw new RuntimeException("unexpected", e);
-                                                                    } catch (Lineup.PlayerAlreadyExists ignored) {
-                                                                    }
-                                                                }
-                                                            }
-                                                            lineup = lineup.removePlayer(forwardProjection.name());
-                                                        }
-                                                    }
-                                                    lineup = lineup.removePlayer(guardProjection.name());
-                                                }
-                                            }
-                                            lineup = lineup.removePlayer(centerProjection.name());
-                                        }
-                                    }
-                                    lineup = lineup.removePlayer(powerForwardProjection.name());
-                                }
-                            }
-                            lineup = lineup.removePlayer(smallForwardProjection.name());
-                        }
-                    }
-                    lineup = lineup.removePlayer(shootingGuardProjection.name());
                 }
-            }
-            lineup = lineup.removePlayer(pointGuardProjection.name());
-        }
+        );
 
         return lineups.stream().map(Map.Entry::getKey).collect(Collectors.toSet());
     }

@@ -5,7 +5,6 @@ import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,21 +28,16 @@ public class Lineup<PlayerIdentifier, Position> {
             @NotNull final Position playerPosition,
             @NotNull final NonEmptyString name,
             @NotNull final NonNegativeDollars salary) {
-        return new Lineup<>(Map.of(playerIdentifier, new PlayerDetails<>(name, salary, playerPosition)), Map.of(playerPosition, playerIdentifier));
+        return new Lineup<>(Map.of(playerIdentifier, new PlayerDetails<>(name, salary, playerPosition)));
     }
 
     @NotNull
     private final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier;
 
-    @NotNull
-    private final Map<Position, PlayerIdentifier> identifiersByPosition;
-
     private Lineup(
-            @NotNull final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier,
-            @NotNull final Map<Position, PlayerIdentifier> identifiersByPosition
+            @NotNull final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier
     ) {
         this.detailsByIdentifier = detailsByIdentifier;
-        this.identifiersByPosition = identifiersByPosition;
     }
 
     @NotNull
@@ -61,45 +55,11 @@ public class Lineup<PlayerIdentifier, Position> {
             throw new PlayerAlreadyExists();
         }
 
-        if (identifiersByPosition.containsKey(playerPosition)) {
-            throw new PlayerAlreadyExistsForPosition();
-        }
-
         return new Lineup<>(
                 Stream.concat(
                         Stream.of(Map.entry(playerIdentifier, new PlayerDetails<>(name, salary, playerPosition))),
                         detailsByIdentifier.entrySet().stream()
-                ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
-                Stream.concat(
-                        Stream.of(Map.entry(playerPosition, playerIdentifier)),
-                        identifiersByPosition.entrySet().stream()
                 ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
-    public Lineup<PlayerIdentifier, Position> removePlayer(@NotNull final PlayerIdentifier playerIdentifier) {
-        return new Lineup<>(
-                detailsByIdentifier
-                        .entrySet()
-                        .stream()
-                        .filter(v -> !v.getKey().equals(playerIdentifier))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
-                identifiersByPosition
-                        .entrySet()
-                        .stream()
-                        .filter(v -> !v.getValue().equals(playerIdentifier))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Lineup<?, ?> lineup = (Lineup<?, ?>) o;
-        return detailsByIdentifier.keySet().equals(lineup.detailsByIdentifier.keySet());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(detailsByIdentifier.keySet());
-    }
 }
