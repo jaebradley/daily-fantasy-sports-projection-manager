@@ -2,7 +2,7 @@ package com.rvnu.calculators.firstparty.draftkings.nba.implementation;
 
 import com.rvnu.applications.nba.draftkings.ProjectionsMerger;
 import com.rvnu.calculators.firstparty.draftkings.nba.interfaces.ProjectionIdentifier;
-import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;

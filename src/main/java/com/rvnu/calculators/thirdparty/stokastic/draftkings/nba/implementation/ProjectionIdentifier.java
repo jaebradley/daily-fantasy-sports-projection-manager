@@ -1,6 +1,6 @@
 package com.rvnu.calculators.thirdparty.stokastic.draftkings.nba.implementation;
 
-import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,7 +1,7 @@
 package com.rvnu.models.thirdparty.rotogrinders.nba;
 
 import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
-import com.rvnu.models.thirdparty.awesomeo.nba.Position;
+import com.rvnu.models.thirdparty.stokastic.nba.Position;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import com.rvnu.models.thirdparty.nba.Team;

@@ -5,9 +5,9 @@ import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupGener
 import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryCalculator;
 import com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryValidator;
 import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
-import com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer;
+import com.rvnu.data.thirdparty.csv.stokastic.record.nba.Deserializer;
 import com.rvnu.models.firstparty.dailyfantasysports.Lineup;
-import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
@@ -222,7 +222,7 @@ public class ProjectionLineupGenerator {
         }
 
         final Set<Set<NonEmptyString>> generatedLineups = new ProjectionLineupGenerator(
-                com.rvnu.data.thirdparty.csv.awesomeo.records.nba.Deserializer.getInstance(),
+                com.rvnu.data.thirdparty.csv.stokastic.records.nba.Deserializer.getInstance(),
                 com.rvnu.data.thirdparty.csv.draftkings.records.nba.Deserializer.getInstance(),
                 new com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryValidator<>(
                         new LineupSalaryCalculator<>(),
