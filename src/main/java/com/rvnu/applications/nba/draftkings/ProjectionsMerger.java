@@ -7,7 +7,7 @@ import com.rvnu.data.firstparty.csv.draftkings.record.nba.projections.printing.D
 import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.data.thirdparty.csv.draftkings.record.nba.Deserializer;
 import com.rvnu.data.thirdparty.csv.sabersim.record.nba.BaseDeserializer;
-import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
@@ -39,7 +39,7 @@ public class ProjectionsMerger {
     private final AbstractDeserializer<ContestPlayer, com.rvnu.data.thirdparty.csv.draftkings.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.draftkings.record.nba.Deserializer.Error> draftKingsDeserializer;
 
     @NotNull
-    private final AbstractDeserializer<Projection, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Error> awesomeoDeserializer;
+    private final AbstractDeserializer<Projection, com.rvnu.data.thirdparty.csv.stokastic.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.stokastic.record.nba.Deserializer.Error> awesomeoDeserializer;
 
     @NotNull
     private final AbstractDeserializer<com.rvnu.models.thirdparty.rotogrinders.nba.Projection, com.rvnu.data.thirdparty.csv.rotogrinders.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.rotogrinders.record.nba.Deserializer.Error> rotogrindersDeserializer;
@@ -52,7 +52,7 @@ public class ProjectionsMerger {
 
     private ProjectionsMerger(
             @NotNull final AbstractDeserializer<ContestPlayer, Deserializer.Column, Deserializer.Error> draftKingsDeserializer,
-            @NotNull final AbstractDeserializer<Projection, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.awesomeo.record.nba.Deserializer.Error> awesomeoDeserializer,
+            @NotNull final AbstractDeserializer<Projection, com.rvnu.data.thirdparty.csv.stokastic.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.stokastic.record.nba.Deserializer.Error> awesomeoDeserializer,
             @NotNull final AbstractDeserializer<com.rvnu.models.thirdparty.rotogrinders.nba.Projection, com.rvnu.data.thirdparty.csv.rotogrinders.record.nba.Deserializer.Column, com.rvnu.data.thirdparty.csv.rotogrinders.record.nba.Deserializer.Error> rotogrindersDeserializer,
             @NotNull final AbstractDeserializer<DraftKingsPlayerProjection, BaseDeserializer.Column, BaseDeserializer.Error> sabersimDeserializer,
             @NotNull final AbstractDeserializer<com.rvnu.models.thirdparty.dailyroto.nba.Projection<Position, PlayerId>, com.rvnu.data.thirdparty.csv.dailyroto.record.nba.BaseDeserializer.Column, com.rvnu.data.thirdparty.csv.dailyroto.record.nba.BaseDeserializer.Error> dailyRotoDeserializer) {
@@ -219,7 +219,7 @@ public class ProjectionsMerger {
 
         final ProjectionsMerger projectionsMerger = new ProjectionsMerger(
                 com.rvnu.data.thirdparty.csv.draftkings.records.nba.Deserializer.getInstance(),
-                com.rvnu.data.thirdparty.csv.awesomeo.records.nba.Deserializer.getInstance(),
+                com.rvnu.data.thirdparty.csv.stokastic.records.nba.Deserializer.getInstance(),
                 com.rvnu.data.thirdparty.csv.rotogrinders.records.nba.Deserializer.getInstance(),
                 com.rvnu.data.thirdparty.csv.sabersim.records.nba.Deserializer.getDraftKingsDeserializer(),
                 com.rvnu.data.thirdparty.csv.dailyroto.records.nba.Deserializer.getDraftKingsDeserializer());

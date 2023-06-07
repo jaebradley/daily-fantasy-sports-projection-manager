@@ -3,7 +3,7 @@ package com.rvnu.data.firstparty.csv.draftkings.record.nba.projections.printing;
 import com.rvnu.applications.nba.draftkings.ProjectionsMerger;
 import com.rvnu.data.firstparty.csv.draftkings.record.nba.projections.Printer;
 import com.rvnu.models.firstparty.collections.NonEmptyLinkedHashSet;
-import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.draftkings.nba.Position;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;

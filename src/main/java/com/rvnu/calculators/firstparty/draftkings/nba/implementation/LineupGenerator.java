@@ -2,7 +2,7 @@ package com.rvnu.calculators.firstparty.draftkings.nba.implementation;
 
 import com.rvnu.applications.nba.draftkings.ProjectionLineupGenerator;
 import com.rvnu.models.firstparty.dailyfantasysports.Lineup;
-import com.rvnu.models.thirdparty.awesomeo.nba.Projection;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import org.jetbrains.annotations.NotNull;
 
