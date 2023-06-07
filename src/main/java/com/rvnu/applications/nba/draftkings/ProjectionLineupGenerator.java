@@ -69,7 +69,7 @@ public class ProjectionLineupGenerator {
         this.salaryValidator = salaryValidator;
     }
 
-    public Set<Lineup<NonEmptyString, RequiredLineupPosition>> generate(@NotNull final File awesomeoFile, @NotNull final File draftkingsFile) {
+    public Set<Set<NonEmptyString>> generate(@NotNull final File awesomeoFile, @NotNull final File draftkingsFile) {
         final Map<com.rvnu.data.thirdparty.csv.draftkings.record.nba.Deserializer.Error, PositiveInteger> results;
         final Map<PlayerId, ContestPlayer> playersById = new HashMap<>();
         try (final FileInputStream fileInputStream = new FileInputStream(draftkingsFile)) {
@@ -102,7 +102,10 @@ public class ProjectionLineupGenerator {
 
         final Map<RequiredLineupPosition, Set<Projection>> projectionsByPosition = new HashMap<>();
         awesomeoProjectionsByName
-                .forEach((name, projection) -> projection
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().fantasyPointsPerOneThousandDollars().compareTo(BigDecimal.valueOf(5)) > 0)
+                .forEach(e -> e.getValue()
                         .eligiblePositions()
                         .forEach(
                                 position -> {
@@ -110,12 +113,12 @@ public class ProjectionLineupGenerator {
                                         case POINT_GUARD -> {
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.POINT_GUARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.POINT_GUARD, projections);
                                             }
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.GUARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.GUARD, projections);
                                             }
                                         }
@@ -123,12 +126,12 @@ public class ProjectionLineupGenerator {
                                         case SHOOTING_GUARD -> {
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.SHOOTING_GUARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.SHOOTING_GUARD, projections);
                                             }
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.GUARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.GUARD, projections);
                                             }
                                         }
@@ -136,12 +139,12 @@ public class ProjectionLineupGenerator {
                                         case SMALL_FORWARD -> {
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.SMALL_FORWARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.SMALL_FORWARD, projections);
                                             }
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.FORWARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.FORWARD, projections);
                                             }
                                         }
@@ -149,12 +152,12 @@ public class ProjectionLineupGenerator {
                                         case POWER_FORWARD -> {
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.POWER_FORWARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.POWER_FORWARD, projections);
                                             }
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.FORWARD, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.FORWARD, projections);
                                             }
                                         }
@@ -162,25 +165,41 @@ public class ProjectionLineupGenerator {
                                         case CENTER -> {
                                             {
                                                 final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.CENTER, new HashSet<>());
-                                                projections.add(projection);
+                                                projections.add(e.getValue());
                                                 projectionsByPosition.put(RequiredLineupPosition.CENTER, projections);
                                             }
                                         }
                                     }
 
                                     final Set<Projection> projections = projectionsByPosition.getOrDefault(RequiredLineupPosition.UTILITY, new HashSet<>());
-                                    projections.add(projection);
+                                    projections.add(e.getValue());
                                     projectionsByPosition.put(RequiredLineupPosition.UTILITY, projections);
                                 }
                         ));
-        final MinMaxPriorityQueue<Map.Entry<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal>> lineups = MinMaxPriorityQueue
-                .<Map.Entry<Lineup<NonEmptyString, RequiredLineupPosition>, BigDecimal>>orderedBy(Map.Entry.comparingByValue())
+        final MinMaxPriorityQueue<Map.Entry<Set<NonEmptyString>, BigDecimal>> lineups = MinMaxPriorityQueue
+                .<Map.Entry<Set<NonEmptyString>, BigDecimal>>orderedBy(Map.Entry.comparingByValue())
                 .maximumSize(10)
                 .create();
         final AtomicLong counter = new AtomicLong(0);
         final LineupGenerator lineupGenerator = new LineupGenerator(projectionsByPosition, salaryValidator);
+        final Set<Set<NonEmptyString>> seenLineups = new HashSet<>();
         lineupGenerator.generateLineup(
                 lineup -> {
+                    if (seenLineups.add(lineup.getDetailsByIdentifier().keySet())) {
+                        lineups.add(
+                                Map.entry(
+                                        lineup.getDetailsByIdentifier().keySet(),
+                                        lineup
+                                                .getDetailsByIdentifier()
+                                                .values()
+                                                .stream()
+                                                .map(Lineup.PlayerDetails::name)
+                                                .map(awesomeoProjectionsByName::get)
+                                                .map(Projection::fantasyPoints)
+                                                .reduce(BigDecimal.ZERO, BigDecimal::subtract))
+                        );
+                    }
+
                     final long count = counter.incrementAndGet();
                     if (0 == (count % 1_000_000L)) {
                         System.out.println("Count is " + count);
@@ -202,7 +221,7 @@ public class ProjectionLineupGenerator {
             throw new RuntimeException("Cannot access DraftKings file");
         }
 
-        final Set<Lineup<NonEmptyString, RequiredLineupPosition>> generatedLineups = new ProjectionLineupGenerator(
+        final Set<Set<NonEmptyString>> generatedLineups = new ProjectionLineupGenerator(
                 com.rvnu.data.thirdparty.csv.awesomeo.records.nba.Deserializer.getInstance(),
                 com.rvnu.data.thirdparty.csv.draftkings.records.nba.Deserializer.getInstance(),
                 new com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryValidator<>(
