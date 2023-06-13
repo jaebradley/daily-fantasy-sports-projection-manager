@@ -34,7 +34,7 @@ public class Lineup<PlayerIdentifier, Position> {
     @NotNull
     private final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier;
 
-    private Lineup(
+    public Lineup(
             @NotNull final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier
     ) {
         this.detailsByIdentifier = detailsByIdentifier;
@@ -61,5 +61,4 @@ public class Lineup<PlayerIdentifier, Position> {
                         detailsByIdentifier.entrySet().stream()
                 ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
-
 }
