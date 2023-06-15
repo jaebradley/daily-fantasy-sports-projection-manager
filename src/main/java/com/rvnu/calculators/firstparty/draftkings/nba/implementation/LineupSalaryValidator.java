@@ -4,7 +4,7 @@ import com.rvnu.models.firstparty.dailyfantasysports.Lineup;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import org.jetbrains.annotations.NotNull;
 
-public class LineupSalaryValidator<PlayerIdentifier, Position> implements com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryValidator<PlayerIdentifier, Position> {
+public class LineupSalaryValidator<PlayerIdentifier, Position extends Enum<Position>> implements com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryValidator<PlayerIdentifier, Position> {
     @NotNull
     private final LineupSalaryCalculator<PlayerIdentifier, Position> lineupSalaryCalculator;
 
