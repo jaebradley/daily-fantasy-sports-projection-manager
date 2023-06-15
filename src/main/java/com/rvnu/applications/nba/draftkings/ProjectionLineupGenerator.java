@@ -1,18 +1,22 @@
 package com.rvnu.applications.nba.draftkings;
 
 import com.google.common.collect.MinMaxPriorityQueue;
-import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupGenerator;
+import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupGroupGenerator;
 import com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryCalculator;
 import com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryValidator;
 import com.rvnu.data.firstparty.csv.records.deserialization.implementation.AbstractDeserializer;
 import com.rvnu.data.thirdparty.csv.stokastic.record.nba.Deserializer;
+import com.rvnu.models.firstparty.collections.NonEmptyCollection;
+import com.rvnu.models.firstparty.collections.NonEmptyHashMap;
+import com.rvnu.models.firstparty.collections.NonEmptyList;
+import com.rvnu.models.firstparty.collections.NonEmptySet;
 import com.rvnu.models.firstparty.dailyfantasysports.Lineup;
-import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.draftkings.nba.ContestPlayer;
 import com.rvnu.models.thirdparty.draftkings.nba.PlayerId;
 import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.iso.PositiveInteger;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
+import com.rvnu.models.thirdparty.stokastic.nba.Projection;
 import com.rvnu.models.thirdparty.strings.NonEmptyString;
 import org.javamoney.moneta.Money;
 import org.jetbrains.annotations.NotNull;
@@ -21,10 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -176,36 +177,67 @@ public class ProjectionLineupGenerator {
                                     projectionsByPosition.put(RequiredLineupPosition.UTILITY, projections);
                                 }
                         ));
+
+        final LineupGroupGenerator<NonEmptyString, RequiredLineupPosition> groupGenerator = new LineupGroupGenerator<>(
+                new EnumMap<RequiredLineupPosition, NonEmptySet<NonEmptyString>>(projectionsByPosition
+                        .entrySet()
+                        .stream()
+                        .filter(e -> !e.getValue().isEmpty())
+                        .map(e -> {
+                            try {
+                                return Map.entry(e.getKey(), new NonEmptySet<>(e.getValue().stream().map(Projection::name).collect(Collectors.toSet())));
+                            } catch (NonEmptyCollection.ValuesCannotBeEmpty ex) {
+                                throw new RuntimeException("unexpected", ex);
+                            }
+                        })
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
+        );
+        final Set<Set<NonEmptyString>> distinctLineupPlayerIds = new HashSet<>();
         final MinMaxPriorityQueue<Map.Entry<Set<NonEmptyString>, BigDecimal>> lineups = MinMaxPriorityQueue
                 .<Map.Entry<Set<NonEmptyString>, BigDecimal>>orderedBy(Map.Entry.comparingByValue())
                 .maximumSize(10)
                 .create();
         final AtomicLong counter = new AtomicLong(0);
-        final LineupGenerator lineupGenerator = new LineupGenerator(projectionsByPosition, salaryValidator);
-        final Set<Set<NonEmptyString>> seenLineups = new HashSet<>();
-        lineupGenerator.generateLineup(
-                lineup -> {
-                    if (seenLineups.add(lineup.getDetailsByIdentifier().keySet())) {
-                        lineups.add(
-                                Map.entry(
-                                        lineup.getDetailsByIdentifier().keySet(),
-                                        lineup
-                                                .getDetailsByIdentifier()
-                                                .values()
-                                                .stream()
-                                                .map(Lineup.PlayerDetails::name)
-                                                .map(awesomeoProjectionsByName::get)
-                                                .map(Projection::fantasyPoints)
-                                                .reduce(BigDecimal.ZERO, BigDecimal::subtract))
-                        );
-                    }
-
-                    final long count = counter.incrementAndGet();
-                    if (0 == (count % 1_000_000L)) {
-                        System.out.println("Count is " + count);
-                    }
+        final NonEmptyList<RequiredLineupPosition> positions;
+        try {
+            positions = new NonEmptyList<>(List.of(RequiredLineupPosition.POINT_GUARD, RequiredLineupPosition.SHOOTING_GUARD, RequiredLineupPosition.GUARD, RequiredLineupPosition.POWER_FORWARD, RequiredLineupPosition.SMALL_FORWARD, RequiredLineupPosition.FORWARD, RequiredLineupPosition.CENTER, RequiredLineupPosition.UTILITY));
+        } catch (NonEmptyCollection.ValuesCannotBeEmpty e) {
+            throw new RuntimeException("unexpected", e);
+        }
+        final Set<NonEmptyHashMap<NonEmptyString, RequiredLineupPosition>> allGroups = groupGenerator.generatePositionGroups(positions);
+        for (final NonEmptyHashMap<NonEmptyString, RequiredLineupPosition> group : allGroups) {
+            final Lineup<NonEmptyString, RequiredLineupPosition> lineup = new Lineup<>(
+                    group
+                            .getValues()
+                            .entrySet()
+                            .stream()
+                            .map(e ->
+                                    Map.entry(e.getKey(), new Lineup.PlayerDetails<>(
+                                            e.getKey(),
+                                            awesomeoProjectionsByName.get(e.getKey()).salary(),
+                                            e.getValue())))
+                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+            if (salaryValidator.lineupHasValidSalary(lineup)) {
+                if (distinctLineupPlayerIds.add(lineup.getDetailsByIdentifier().keySet())) {
+                    lineups.add(
+                            Map.entry(
+                                    lineup.getDetailsByIdentifier().keySet(),
+                                    lineup
+                                            .getDetailsByIdentifier()
+                                            .values()
+                                            .stream()
+                                            .map(Lineup.PlayerDetails::name)
+                                            .map(awesomeoProjectionsByName::get)
+                                            .map(Projection::fantasyPoints)
+                                            .reduce(BigDecimal.ZERO, BigDecimal::subtract))
+                    );
                 }
-        );
+            }
+            final long count = counter.incrementAndGet();
+            if (0 == (count % 1_000_000L)) {
+                System.out.println("Count is " + count);
+            }
+        }
 
         return lineups.stream().map(Map.Entry::getKey).collect(Collectors.toSet());
     }
@@ -224,7 +256,7 @@ public class ProjectionLineupGenerator {
         final Set<Set<NonEmptyString>> generatedLineups = new ProjectionLineupGenerator(
                 com.rvnu.data.thirdparty.csv.stokastic.records.nba.Deserializer.getInstance(),
                 com.rvnu.data.thirdparty.csv.draftkings.records.nba.Deserializer.getInstance(),
-                new com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryValidator<>(
+                new com.rvnu.calculators.firstparty.draftkings.nba.implementation.LineupSalaryValidator<NonEmptyString, RequiredLineupPosition>(
                         new LineupSalaryCalculator<>(),
                         maximumInclusiveSalary
                 ))

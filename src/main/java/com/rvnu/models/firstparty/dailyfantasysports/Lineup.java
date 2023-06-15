@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Lineup<PlayerIdentifier, Position> {
+public class Lineup<PlayerIdentifier, Position extends Enum<Position>> {
 
     public static class PlayerAlreadyExistsForPosition extends Exception {
     }
@@ -16,14 +16,14 @@ public class Lineup<PlayerIdentifier, Position> {
     public static class PlayerAlreadyExists extends Exception {
     }
 
-    public static record PlayerDetails<Position>(
+    public static record PlayerDetails<Position extends Enum<Position>>(
             @NotNull NonEmptyString name,
             @NotNull NonNegativeDollars salary,
             @NotNull Position position
     ) {
     }
 
-    public static <PlayerIdentifier, Position> Lineup<PlayerIdentifier, Position> withPlayer(
+    public static <PlayerIdentifier, Position extends Enum<Position>> Lineup<PlayerIdentifier, Position> withPlayer(
             @NotNull final PlayerIdentifier playerIdentifier,
             @NotNull final Position playerPosition,
             @NotNull final NonEmptyString name,
@@ -34,7 +34,7 @@ public class Lineup<PlayerIdentifier, Position> {
     @NotNull
     private final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier;
 
-    private Lineup(
+    public Lineup(
             @NotNull final Map<PlayerIdentifier, PlayerDetails<Position>> detailsByIdentifier
     ) {
         this.detailsByIdentifier = detailsByIdentifier;
@@ -61,5 +61,4 @@ public class Lineup<PlayerIdentifier, Position> {
                         detailsByIdentifier.entrySet().stream()
                 ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
-
 }

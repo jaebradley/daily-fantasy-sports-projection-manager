@@ -5,7 +5,7 @@ import com.rvnu.models.thirdparty.iso.NaturalNumber;
 import com.rvnu.models.thirdparty.money.NonNegativeDollars;
 import org.jetbrains.annotations.NotNull;
 
-public class LineupSalaryCalculator<PlayerIdentifier, Position> implements com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryCalculator<PlayerIdentifier, Position> {
+public class LineupSalaryCalculator<PlayerIdentifier, Position extends Enum<Position>> implements com.rvnu.calculators.firstparty.draftkings.nba.interfaces.LineupSalaryCalculator<PlayerIdentifier, Position> {
     @NotNull
     @Override
     public NonNegativeDollars calculateSalary(@NotNull Lineup<PlayerIdentifier, Position> lineup) {
